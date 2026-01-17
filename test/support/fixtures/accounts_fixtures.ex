@@ -19,12 +19,22 @@ defmodule Jutilis.AccountsFixtures do
   end
 
   def unconfirmed_user_fixture(attrs \\ %{}) do
+    {admin_flag, attrs} = Map.pop(attrs, :admin_flag, false)
+    {investor_flag, attrs} = Map.pop(attrs, :investor_flag, false)
+
     {:ok, user} =
       attrs
       |> valid_user_attributes()
       |> Accounts.register_user()
 
-    user
+    # Set flags directly if specified
+    if admin_flag || investor_flag do
+      user
+      |> Ecto.Changeset.change(%{admin_flag: admin_flag, investor_flag: investor_flag})
+      |> Jutilis.Repo.update!()
+    else
+      user
+    end
   end
 
   def user_fixture(attrs \\ %{}) do

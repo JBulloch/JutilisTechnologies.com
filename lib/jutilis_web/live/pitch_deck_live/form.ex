@@ -14,7 +14,12 @@ defmodule JutilisWeb.PitchDeckLive.Form do
       </.header>
 
       <.form for={@form} id="pitch_deck-form" phx-change="validate" phx-submit="save">
-        <.input field={@form[:title]} type="text" label="Title" placeholder="e.g., Q1 2026 Investor Deck" />
+        <.input
+          field={@form[:title]}
+          type="text"
+          label="Title"
+          placeholder="e.g., Q1 2026 Investor Deck"
+        />
 
         <.input
           field={@form[:venture]}
@@ -24,7 +29,13 @@ defmodule JutilisWeb.PitchDeckLive.Form do
           prompt="Select a venture"
         />
 
-        <.input field={@form[:description]} type="textarea" label="Description" rows="3" placeholder="Brief description of this pitch deck..." />
+        <.input
+          field={@form[:description]}
+          type="textarea"
+          label="Description"
+          rows="3"
+          placeholder="Brief description of this pitch deck..."
+        />
 
         <.input
           field={@form[:status]}
@@ -33,7 +44,12 @@ defmodule JutilisWeb.PitchDeckLive.Form do
           options={status_options()}
         />
 
-        <.input field={@form[:file_url]} type="text" label="External File URL (optional)" placeholder="https://..." />
+        <.input
+          field={@form[:file_url]}
+          type="text"
+          label="External File URL (optional)"
+          placeholder="https://..."
+        />
 
         <div class="form-control mt-4">
           <label class="label">
@@ -43,14 +59,23 @@ defmodule JutilisWeb.PitchDeckLive.Form do
             class="border-2 border-dashed border-base-300 rounded-xl p-6 text-center hover:border-primary transition-colors"
             phx-drop-target={@uploads.html_file.ref}
           >
-            <.live_file_input upload={@uploads.html_file} class="sr-only" id="html-file-input" />
             <div class="text-base-content/60">
-              <svg class="h-10 w-10 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              <svg
+                class="h-10 w-10 mx-auto mb-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
               </svg>
               <p class="text-sm mb-3">Drag and drop an HTML file here</p>
-              <label for="html-file-input" class="btn btn-primary btn-sm cursor-pointer">
-                Select File
+              <label class="btn btn-primary btn-sm cursor-pointer">
+                <.live_file_input upload={@uploads.html_file} class="hidden" /> Select File
               </label>
               <p class="text-xs mt-3">Max size: 5MB</p>
             </div>
@@ -60,7 +85,12 @@ defmodule JutilisWeb.PitchDeckLive.Form do
             <div class="mt-2 flex items-center gap-2 p-2 bg-base-200 rounded-lg">
               <.icon name="hero-document-text" class="h-5 w-5 text-primary" />
               <span class="flex-1 text-sm">{entry.client_name}</span>
-              <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref} class="btn btn-ghost btn-xs">
+              <button
+                type="button"
+                phx-click="cancel-upload"
+                phx-value-ref={entry.ref}
+                class="btn btn-ghost btn-xs"
+              >
                 <.icon name="hero-x-mark" class="h-4 w-4" />
               </button>
             </div>

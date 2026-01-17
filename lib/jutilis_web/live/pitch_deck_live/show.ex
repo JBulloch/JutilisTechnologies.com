@@ -10,9 +10,13 @@ defmodule JutilisWeb.PitchDeckLive.Show do
       <.header>
         {@pitch_deck.title}
         <:subtitle>
-          <span class={"badge badge-sm #{status_badge_class(@pitch_deck.status)}"}>{@pitch_deck.status}</span>
+          <span class={"badge badge-sm #{status_badge_class(@pitch_deck.status)}"}>
+            {@pitch_deck.status}
+          </span>
           <%= if @pitch_deck.venture do %>
-            <span class="badge badge-outline badge-sm ml-2">{venture_label(@pitch_deck.venture)}</span>
+            <span class="badge badge-outline badge-sm ml-2">
+              {venture_label(@pitch_deck.venture)}
+            </span>
           <% end %>
         </:subtitle>
         <:actions>
@@ -32,7 +36,9 @@ defmodule JutilisWeb.PitchDeckLive.Show do
         <:item title="Description">{@pitch_deck.description || "No description"}</:item>
         <:item title="External URL">
           <%= if @pitch_deck.file_url do %>
-            <a href={@pitch_deck.file_url} target="_blank" class="link link-primary">{@pitch_deck.file_url}</a>
+            <a href={@pitch_deck.file_url} target="_blank" class="link link-primary">
+              {@pitch_deck.file_url}
+            </a>
           <% else %>
             <span class="text-base-content/50">Not set</span>
           <% end %>
@@ -41,13 +47,17 @@ defmodule JutilisWeb.PitchDeckLive.Show do
           <%= if @pitch_deck.html_content do %>
             <div class="flex items-center gap-2">
               <span class="badge badge-success badge-sm">Uploaded</span>
-              <span class="text-sm text-base-content/60">{String.length(@pitch_deck.html_content)} characters</span>
+              <span class="text-sm text-base-content/60">
+                {String.length(@pitch_deck.html_content)} characters
+              </span>
             </div>
           <% else %>
             <span class="text-base-content/50">Not uploaded</span>
           <% end %>
         </:item>
-        <:item title="Created">{Calendar.strftime(@pitch_deck.inserted_at, "%B %d, %Y at %I:%M %p")}</:item>
+        <:item title="Created">
+          {Calendar.strftime(@pitch_deck.inserted_at, "%B %d, %Y at %I:%M %p")}
+        </:item>
       </.list>
 
       <%= if @pitch_deck.html_content do %>

@@ -12,8 +12,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
     test "renders login page", %{conn: conn} do
       conn = get(conn, ~p"/users/log-in")
       response = html_response(conn, 200)
-      assert response =~ "Log in"
-      assert response =~ ~p"/users/register"
+      assert response =~ "Admin Login"
       assert response =~ "Log in with email"
     end
 
@@ -35,8 +34,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
     test "renders login page (email + password)", %{conn: conn} do
       conn = get(conn, ~p"/users/log-in?mode=password")
       response = html_response(conn, 200)
-      assert response =~ "Log in"
-      assert response =~ ~p"/users/register"
+      assert response =~ "Admin Login"
       assert response =~ "Log in with email"
     end
   end
@@ -61,7 +59,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
       conn = get(conn, ~p"/users/log-in/#{token}")
       html = html_response(conn, 200)
       refute html =~ "Confirm my account"
-      assert html =~ "Log in"
+      assert html =~ "Keep me logged in"
     end
 
     test "raises error for invalid token", %{conn: conn} do
@@ -88,8 +86,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
       # Now do a logged in request and assert on the menu
       conn = get(conn, ~p"/")
       response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ ~p"/users/settings"
+      assert response =~ "Dashboard"
       assert response =~ ~p"/users/log-out"
     end
 
@@ -133,7 +130,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Log in"
+      assert response =~ "Admin Login"
       assert response =~ "Invalid email or password"
     end
   end
@@ -163,8 +160,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
       # Now do a logged in request and assert on the menu
       conn = get(conn, ~p"/")
       response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ ~p"/users/settings"
+      assert response =~ "Dashboard"
       assert response =~ ~p"/users/log-out"
     end
 
@@ -187,8 +183,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
       # Now do a logged in request and assert on the menu
       conn = get(conn, ~p"/")
       response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ ~p"/users/settings"
+      assert response =~ "Dashboard"
       assert response =~ ~p"/users/log-out"
     end
 

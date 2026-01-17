@@ -4,20 +4,26 @@ defmodule Jutilis.PitchDecksFixtures do
   entities via the `Jutilis.PitchDecks` context.
   """
 
+  alias Jutilis.AccountsFixtures
+  alias Jutilis.Accounts.Scope
+
   @doc """
   Generate a pitch_deck.
   """
   def pitch_deck_fixture(attrs \\ %{}) do
+    user = AccountsFixtures.user_fixture(%{admin_flag: true})
+    scope = Scope.for_user(user)
+
     {:ok, pitch_deck} =
       attrs
       |> Enum.into(%{
-        description: "some description",
-        file_url: "some file_url",
-        status: "some status",
-        title: "some title",
-        venture: "some venture"
+        "description" => "some description",
+        "file_url" => "some file_url",
+        "status" => "draft",
+        "title" => "some title",
+        "venture" => "other"
       })
-      |> Jutilis.PitchDecks.create_pitch_deck()
+      |> then(&Jutilis.PitchDecks.create_pitch_deck(scope, &1))
 
     pitch_deck
   end

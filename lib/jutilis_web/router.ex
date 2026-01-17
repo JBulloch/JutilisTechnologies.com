@@ -23,6 +23,12 @@ defmodule JutilisWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/investors", JutilisWeb do
+    pipe_through :browser
+
+    post "/subscribe", SubscriberController, :create
+  end
+
   ## Public investor routes (no auth required)
   scope "/investors", JutilisWeb do
     pipe_through :browser
@@ -58,12 +64,7 @@ defmodule JutilisWeb.Router do
 
   ## Authentication routes
 
-  scope "/", JutilisWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
-
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
-  end
+  # Registration disabled - single admin user only
 
   scope "/", JutilisWeb do
     pipe_through [:browser, :require_authenticated_user]
@@ -89,6 +90,7 @@ defmodule JutilisWeb.Router do
 
     live_session :admin,
       on_mount: [{JutilisWeb.UserAuth, :ensure_admin}] do
+      live "/dashboard", AdminLive.Dashboard, :index
       live "/pitch-decks", PitchDeckLive.Index, :index
       live "/pitch-decks/new", PitchDeckLive.Form, :new
       live "/pitch-decks/:id", PitchDeckLive.Show, :show

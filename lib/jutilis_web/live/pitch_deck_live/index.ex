@@ -36,7 +36,9 @@ defmodule JutilisWeb.PitchDeckLive.Index do
           <% end %>
         </:col>
         <:col :let={{_id, pitch_deck}} label="Status">
-          <span class={"badge badge-sm #{status_badge_class(pitch_deck.status)}"}>{pitch_deck.status}</span>
+          <span class={"badge badge-sm #{status_badge_class(pitch_deck.status)}"}>
+            {pitch_deck.status}
+          </span>
         </:col>
         <:col :let={{_id, pitch_deck}} label="Content">
           <div class="flex gap-1">
