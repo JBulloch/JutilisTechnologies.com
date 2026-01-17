@@ -45,20 +45,8 @@
           
 <!-- Desktop Navigation -->
           <div class="flex items-center gap-4">
-            <a
-              href="/#ventures"
-              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
-            >
-              Ventures
-            </a>
-            <a
-              href="/investors/pitch-decks"
-              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
-            >
-              Pitch Decks
-            </a>
-
             <%= if assigns[:current_scope] && @current_scope do %>
+              <!-- Admin Navigation -->
               <a
                 href="/admin/dashboard"
                 class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
@@ -69,7 +57,27 @@
                 href="/admin/pitch-decks"
                 class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
               >
-                Manage Decks
+                Pitch Decks
+              </a>
+              <a
+                href="/admin/ventures"
+                class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
+              >
+                Ventures
+              </a>
+            <% else %>
+              <!-- Public Navigation -->
+              <a
+                href="/#ventures"
+                class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+              >
+                Ventures
+              </a>
+              <a
+                href="/investors/pitch-decks"
+                class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+              >
+                Pitch Decks
               </a>
             <% end %>
             

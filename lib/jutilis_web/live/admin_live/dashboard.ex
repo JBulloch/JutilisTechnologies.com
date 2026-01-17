@@ -3,6 +3,7 @@ defmodule JutilisWeb.AdminLive.Dashboard do
 
   alias Jutilis.PitchDecks
   alias Jutilis.Subscribers
+  alias Jutilis.Ventures
 
   @impl true
   def render(assigns) do
@@ -85,7 +86,7 @@ defmodule JutilisWeb.AdminLive.Dashboard do
                 </svg>
               </div>
               <div>
-                <p class="text-3xl font-black text-base-content">2</p>
+                <p class="text-3xl font-black text-base-content">{@venture_count}</p>
                 <p class="text-sm font-semibold text-base-content/60">Active Ventures</p>
               </div>
             </div>
@@ -134,6 +135,9 @@ defmodule JutilisWeb.AdminLive.Dashboard do
             </a>
             <a href={~p"/admin/pitch-decks"} class="btn btn-ghost">
               Manage Pitch Decks
+            </a>
+            <a href={~p"/admin/ventures"} class="btn btn-ghost">
+              Manage Ventures
             </a>
             <a href={~p"/investors/pitch-decks"} class="btn btn-ghost" target="_blank">
               View Public Page
@@ -221,6 +225,7 @@ defmodule JutilisWeb.AdminLive.Dashboard do
   def mount(_params, _session, socket) do
     pitch_decks = PitchDecks.list_pitch_decks(socket.assigns.current_scope)
     subscribers = Subscribers.list_subscribers()
+    venture_count = Ventures.count_active_ventures()
 
     published_count = Enum.count(pitch_decks, &(&1.status == "published"))
     draft_count = Enum.count(pitch_decks, &(&1.status == "draft"))
@@ -232,7 +237,8 @@ defmodule JutilisWeb.AdminLive.Dashboard do
      |> assign(:subscribers, subscribers)
      |> assign(:published_count, published_count)
      |> assign(:draft_count, draft_count)
-     |> assign(:subscriber_count, length(subscribers))}
+     |> assign(:subscriber_count, length(subscribers))
+     |> assign(:venture_count, venture_count)}
   end
 
   @impl true

@@ -95,6 +95,10 @@ defmodule JutilisWeb.Router do
       live "/pitch-decks/new", PitchDeckLive.Form, :new
       live "/pitch-decks/:id", PitchDeckLive.Show, :show
       live "/pitch-decks/:id/edit", PitchDeckLive.Form, :edit
+      live "/ventures", AdminLive.VentureIndex, :index
+      live "/ventures/new", AdminLive.VentureForm, :new
+      live "/ventures/:id", AdminLive.VentureShow, :show
+      live "/ventures/:id/edit", AdminLive.VentureForm, :edit
     end
   end
 end

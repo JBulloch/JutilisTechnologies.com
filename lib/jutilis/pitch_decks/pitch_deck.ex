@@ -14,6 +14,7 @@ defmodule Jutilis.PitchDecks.PitchDeck do
     field :venture, :string
 
     belongs_to :user, Jutilis.Accounts.User
+    belongs_to :venture_record, Jutilis.Ventures.Venture, foreign_key: :venture_id
 
     timestamps(type: :utc_datetime)
   end
@@ -21,12 +22,13 @@ defmodule Jutilis.PitchDecks.PitchDeck do
   @doc false
   def changeset(pitch_deck, attrs) do
     pitch_deck
-    |> cast(attrs, [:title, :description, :file_url, :html_content, :status, :venture, :user_id])
+    |> cast(attrs, [:title, :description, :file_url, :html_content, :status, :venture, :venture_id, :user_id])
     |> validate_required([:title, :status, :user_id])
     |> validate_inclusion(:status, @valid_statuses)
     |> validate_length(:title, min: 3, max: 255)
     |> validate_length(:description, max: 5000)
     |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:venture_id)
   end
 
   @doc """
