@@ -9,6 +9,7 @@ defmodule Jutilis.PitchDecks.PitchDeck do
     field :title, :string
     field :description, :string
     field :file_url, :string
+    field :html_content, :string
     field :status, :string, default: "draft"
     field :venture, :string
 
@@ -20,7 +21,7 @@ defmodule Jutilis.PitchDecks.PitchDeck do
   @doc false
   def changeset(pitch_deck, attrs) do
     pitch_deck
-    |> cast(attrs, [:title, :description, :file_url, :status, :venture, :user_id])
+    |> cast(attrs, [:title, :description, :file_url, :html_content, :status, :venture, :user_id])
     |> validate_required([:title, :status, :user_id])
     |> validate_inclusion(:status, @valid_statuses)
     |> validate_length(:title, min: 3, max: 255)

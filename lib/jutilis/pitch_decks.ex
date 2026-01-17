@@ -95,4 +95,26 @@ defmodule Jutilis.PitchDecks do
   end
 
   def broadcast_pitch_deck_change({:error, _reason} = error, _event), do: error
+
+  @doc """
+  Returns the list of published pitch_decks for public/investor viewing.
+  """
+  def list_published_pitch_decks do
+    from(p in PitchDeck,
+      where: p.status == "published",
+      order_by: [desc: p.inserted_at]
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single published pitch_deck by id for public/investor viewing.
+  Returns nil if not found or not published.
+  """
+  def get_published_pitch_deck(id) do
+    from(p in PitchDeck,
+      where: p.id == ^id and p.status == "published"
+    )
+    |> Repo.one()
+  end
 end

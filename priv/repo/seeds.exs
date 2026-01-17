@@ -14,7 +14,7 @@ alias Jutilis.Repo
 alias Jutilis.Accounts.User
 
 # Create admin user
-admin_email = "Jbulloch@jutilitstechnologies.com"
+admin_email = "jbulloch@jutilistechnologies.com"
 
 unless Repo.get_by(User, email: admin_email) do
   {:ok, admin} =

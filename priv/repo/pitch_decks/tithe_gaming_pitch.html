@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="en" style="background-color: #080f0c;"><head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <meta name="color-scheme" content="dark">  <title>Tithe Gaming PaaS – Investor Pitch Deck</title>  <link rel="preconnect" href="https://fonts.googleapis.com">  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">  <style>    :root {      --bg-dark: #080f0c;      --bg-card: #0f1a15;      --accent-gold: #d4af37;      --accent-gold-bright: #f0c84d;      --accent-emerald: #2e8b6e;      --accent-emerald-bright: #3ba882;      --text-primary: #ffffff;      --text-secondary: #a8b8a8;      --text-muted: #5a6a5a;      --gradient-primary: linear-gradient(135deg, #d4af37 0%, #3ba882 50%, #d4af37 100%);      --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f0c84d 100%);      --gradient-emerald: linear-gradient(135deg, #2e8b6e 0%, #3ba882 100%);    }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {  font-family: 'Outfit', sans-serif;  background: var(--bg-dark);  color: var(--text-primary);  line-height: 1.5;}
+.slide {  width: 100%;  min-height: 100vh;  padding: 50px 70px;  display: flex;  flex-direction: column;  position: relative;  overflow: hidden;  page-break-after: always;  break-after: page;  background-color: #080f0c !important;}
+.slide:last-child { page-break-after: avoid; }
+.slide::before {  content: '';  position: absolute;  top: -50%;  right: -30%;  width: 80%;  height: 150%;  background: radial-gradient(ellipse, rgba(212, 175, 55, 0.1) 0%, transparent 60%);  pointer-events: none;}
+.slide::after {  content: '';  position: absolute;  bottom: -30%;  left: -20%;  width: 60%;  height: 100%;  background: radial-gradient(ellipse, rgba(46, 139, 110, 0.08) 0%, transparent 60%);  pointer-events: none;}
+.scripture-watermark {  position: absolute;  font-family: 'Space Mono', monospace;  font-size: 10px;  letter-spacing: 1px;  color: rgba(212, 175, 55, 0.06);  pointer-events: none;  z-index: 0;  white-space: nowrap;}
+.scripture-watermark.top-right { top: 70px; right: 45px; }
+.scripture-watermark.bottom-left { bottom: 70px; left: 45px; }
+.scripture-watermark.center {  top: 50%;  left: 50%;  transform: translate(-50%, -50%) rotate(-12deg);  font-size: 42px;  letter-spacing: 6px;}
+.slide-header {  display: flex;  justify-content: space-between;  align-items: center;  margin-bottom: 32px;  position: relative;  z-index: 1;}
+.logo {  font-family: 'Space Mono', monospace;  font-size: 13px;  font-weight: 700;  letter-spacing: 2px;  background: var(--gradient-gold);  -webkit-background-clip: text;  -webkit-text-fill-color: transparent;  background-clip: text;}
+.slide-number {  font-family: 'Space Mono', monospace;  font-size: 11px;  color: var(--text-muted);  letter-spacing: 1px;}
+h1 {  font-size: 52px;  font-weight: 800;  line-height: 1.1;  margin-bottom: 14px;  letter-spacing: -1px;}
+h1 .gradient {  background: var(--gradient-gold);  -webkit-background-clip: text;  -webkit-text-fill-color: transparent;  background-clip: text;}
+h2 {  font-size: 32px;  font-weight: 700;  margin-bottom: 24px;  letter-spacing: -0.5px;}
+h3 {  font-size: 16px;  font-weight: 600;  margin-bottom: 14px;  color: var(--accent-gold);}
+.subtitle {  font-size: 20px;  color: var(--text-secondary);  font-weight: 300;  margin-bottom: 32px;  max-width: 700px;}
+.tagline {  font-family: 'Space Mono', monospace;  font-size: 12px;  letter-spacing: 3px;  text-transform: uppercase;  color: var(--accent-gold);  margin-bottom: 16px;}
+.content {  flex: 1;  display: flex;  flex-direction: column;  position: relative;  z-index: 1;}
+.two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+.three-column { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.four-column { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.five-column { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.card {  background: var(--bg-card);  border: 1px solid rgba(212, 175, 55, 0.15);  border-radius: 14px;  padding: 26px;  position: relative;  overflow: hidden;}
+.card::before {  content: '';  position: absolute;  top: 0;  left: 0;  right: 0;  height: 2px;  background: var(--gradient-gold);  opacity: 0.8;}
+.card.emerald::before { background: var(--gradient-emerald); }
+.card-icon {  width: 44px;  height: 44px;  border-radius: 10px;  background: rgba(212, 175, 55, 0.1);  display: flex;  align-items: center;  justify-content: center;  margin-bottom: 16px;  font-size: 22px;}
+.card h4 {  font-size: 16px;  font-weight: 600;  margin-bottom: 10px;}
+.card p {  font-size: 13px;  color: var(--text-secondary);  line-height: 1.6;}
+.stat-box {  text-align: center;  padding: 32px 20px;  background: var(--bg-card);  border-radius: 14px;  border: 1px solid rgba(212, 175, 55, 0.15);}
+.stat-value {  font-size: 42px;  font-weight: 800;  background: var(--gradient-gold);  -webkit-background-clip: text;  -webkit-text-fill-color: transparent;  background-clip: text;  line-height: 1;  margin-bottom: 6px;}
+.stat-value.emerald {  background: var(--gradient-emerald);  -webkit-background-clip: text;  background-clip: text;}
+.stat-label {  font-size: 12px;  color: var(--text-secondary);  font-weight: 500;}
+ul { list-style: none; }
+ul li {  padding: 10px 0;  padding-left: 24px;  position: relative;  font-size: 14px;  color: var(--text-secondary);  border-bottom: 1px solid rgba(212, 175, 55, 0.1);}
+ul li:last-child { border-bottom: none; }
+ul li::before {  content: '';  position: absolute;  left: 0;  top: 50%;  transform: translateY(-50%);  width: 7px;  height: 7px;  background: var(--accent-gold);  border-radius: 2px;}
+ul li strong {  color: var(--text-primary);  font-weight: 600;}
+.table-container {  background: var(--bg-card);  border-radius: 14px;  overflow: hidden;  border: 1px solid rgba(212, 175, 55, 0.15);}
+table {  width: 100%;  border-collapse: collapse;  font-size: 12px;}
+thead { background: rgba(212, 175, 55, 0.1); }
+th {  padding: 14px 16px;  text-align: left;  font-weight: 600;  font-size: 11px;  letter-spacing: 1px;  text-transform: uppercase;  color: var(--accent-gold);}
+td {  padding: 14px 16px;  border-bottom: 1px solid rgba(212, 175, 55, 0.08);  color: var(--text-secondary);}
+tr:last-child td { border-bottom: none; }
+td:first-child { font-weight: 600; color: var(--accent-gold); }
+.highlight-box {  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(46, 139, 110, 0.1) 100%);  border: 1px solid rgba(212, 175, 55, 0.3);  border-radius: 14px;  padding: 26px;  margin-top: 24px;}
+.highlight-box h4 {  color: var(--accent-gold);  font-size: 12px;  letter-spacing: 2px;  text-transform: uppercase;  margin-bottom: 14px;}
+.accent-box {  margin-top: 20px;  padding: 20px;  background: rgba(46, 139, 110, 0.1);  border-radius: 10px;  border-left: 3px solid var(--accent-emerald);}
+.accent-box p {  font-size: 14px;  color: var(--text-secondary);}
+.accent-box p strong {  color: var(--text-primary);  font-weight: 600;}
+.slide-footer {  margin-top: auto;  padding-top: 30px;  font-size: 10px;  color: var(--text-muted);  font-family: 'Space Mono', monospace;  letter-spacing: 1px;  position: relative;  z-index: 1;}
+.slide.title-slide {  justify-content: center;  align-items: center;  text-align: center;}
+.slide.title-slide h1 {  font-size: 68px;  margin-bottom: 20px;}
+.slide.title-slide .subtitle {  max-width: 800px;  margin: 0 auto 32px;}
+.title-badge {  display: inline-block;  background: var(--gradient-gold);  color: var(--bg-dark);  font-family: 'Space Mono', monospace;  font-size: 11px;  font-weight: 700;  padding: 7px 18px;  border-radius: 100px;  letter-spacing: 2px;  text-transform: uppercase;  margin-bottom: 28px;}
+.cta-content {  text-align: center;  max-width: 700px;  margin: 0 auto;}
+.cta-content h1 {  font-size: 44px;  margin-bottom: 20px;}
+.mini-stats {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 14px;  margin-top: 20px;}
+.mini-stat {  text-align: center;  padding: 16px;  background: var(--bg-card);  border-radius: 10px;  border: 1px solid rgba(212, 175, 55, 0.15);}
+.mini-stat .value {  font-size: 24px;  font-weight: 800;  color: var(--accent-gold);}
+.mini-stat .value.emerald { color: var(--accent-emerald-bright); }
+.mini-stat .label {  font-size: 10px;  color: var(--text-muted);}
+.competitor-card {  background: var(--bg-card);  border: 1px solid rgba(212, 175, 55, 0.15);  border-radius: 12px;  padding: 20px;  text-align: center;}
+.competitor-card .company-name {  font-size: 14px;  font-weight: 700;  color: var(--text-primary);  margin-bottom: 8px;}
+.competitor-card .market-share {  font-size: 28px;  font-weight: 800;  background: var(--gradient-gold);  -webkit-background-clip: text;  -webkit-text-fill-color: transparent;  margin-bottom: 4px;}
+.competitor-card .share-label {  font-size: 10px;  color: var(--text-muted);  text-transform: uppercase;  letter-spacing: 1px;  margin-bottom: 12px;}
+.competitor-card .detail {  font-size: 11px;  color: var(--text-secondary);  line-height: 1.5;}
+.source-note {  font-size: 9px;  color: var(--text-muted);  font-style: italic;  margin-top: 16px;}
+@media print {  body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }  .slide { min-height: 100vh; height: 100vh; page-break-after: always; break-after: page; overflow: hidden; }  .slide::before, .slide::after { display: none; }}
+@page { size: landscape; margin: 0; }
+  </style></head><body style="background-color: #080f0c;">
+  <!-- Slide 1: Title -->
+  <section class="slide title-slide">
+    <div class="scripture-watermark center">PROVERBS 16:3</div>
+    <div class="slide-header" style="position: absolute; top: 36px; left: 55px; right: 55px;">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">CONFIDENTIAL</div>
+    </div>
+    <div class="content">
+      <div class="title-badge">Investor Pitch Deck</div>
+      <h1><span class="gradient">Tithe Gaming</span> PaaS</h1>
+      <p class="subtitle">The Future of the Casino Floor: AI-Powered Refactoring & Real-Time Monetization</p>
+      <p class="tagline">Phoenix &middot; LiveView &middot; Edge Computing &middot; AI</p>
+    </div>
+    <div class="slide-footer" style="position: absolute; bottom: 36px; left: 55px;">
+      &copy; 2026 Tithe Gaming PaaS &middot; All Rights Reserved
+    </div>
+  </section>
+
+  <!-- Slide 2: Executive Summary -->
+  <section class="slide">
+    <div class="scripture-watermark top-right">COLOSSIANS 3:23</div>
+    <div class="scripture-watermark bottom-left">ECCLESIASTES 9:10</div>
+    <div class="slide-header">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">01 / EXECUTIVE SUMMARY</div>
+    </div>
+    <div class="content">
+      <p class="tagline">The $16.8 Billion Opportunity</p>
+      <h2>Transforming Legacy Hardware Into<br>Dynamic Revenue Drivers</h2>
+      <p class="subtitle">We solve the casino industry's multi-billion dollar problem of expensive, inflexible, and rapidly obsolete hardware with a software-defined platform.</p>
+      <div class="four-column" style="margin-top: 28px;">
+        <div class="stat-box">
+          <div class="stat-value">60-80%</div>
+          <div class="stat-label">CapEx Reduction</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value emerald">Real-Time</div>
+          <div class="stat-label">Theme & RTP Swaps</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">20M+</div>
+          <div class="stat-label">Concurrent Connections</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value emerald">85%+</div>
+          <div class="stat-label">Gross Margin SaaS</div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <h4>Why Now?</h4>
+        <p style="color: var(--text-secondary); font-size: 14px;">Apollo Global Management just acquired IGT's gaming division for <strong style="color: var(--accent-gold);">$4.05 billion</strong> — PE sees massive value in gaming tech. 58.5% of casino floors still run legacy cabinets waiting for modernization. Server-based gaming is cutting floor reconfiguration labor by 30%.</p>
+      </div>
+    </div>
+    <div class="slide-footer">Tithe Gaming PaaS</div>
+  </section>
+
+  <!-- Slide 3: The Problem -->
+  <section class="slide">
+    <div class="scripture-watermark top-right">PROVERBS 21:5</div>
+    <div class="scripture-watermark bottom-left">LUKE 14:28</div>
+    <div class="slide-header">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">02 / THE PROBLEM</div>
+    </div>
+    <div class="content">
+      <p class="tagline">The Legacy Drag</p>
+      <h2>The "Hardware-First" Prison</h2>
+      <div class="two-column" style="margin-top: 24px;">
+        <div>
+          <div class="card">
+            <h3>Industry Pain Points</h3>
+            <ul>
+              <li><strong>$15,000 – $25,000 Per Machine</strong> — New slot machines cost casinos $14k-$18k average, up to $25k+ for premium cabinets</li>
+              <li><strong>7-10 Year Lifecycle</strong> — Machines depreciate but casinos can't afford constant replacement cycles</li>
+              <li><strong>Static & Inflexible</strong> — Game themes and RTP hard-coded, requiring costly physical intervention</li>
+              <li><strong>52% Face Rising Maintenance</strong> — Operators report escalating costs for aging hardware</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="card emerald">
+            <h3>The Cost Breakdown (New Machine)</h3>
+            <ul>
+              <li><strong>Cabinet & Housing</strong> — $500 – $2,000</li>
+              <li><strong>LCD Display (19-23")</strong> — $250 – $300</li>
+              <li><strong>Gaming Board</strong> — $100 – $1,000</li>
+              <li><strong>Game Software License</strong> — $3,000+</li>
+              <li><strong>Installation & Setup</strong> — $500+</li>
+              <li><strong style="color: var(--accent-gold);">Total: $15,000 – $25,000</strong></li>
+            </ul>
+          </div>
+          <div class="accent-box">
+            <p><strong>Casino Math:</strong> A machine needs to generate $200/day (~$6k/month) to justify purchase. At $14k, payback takes 10+ weeks — but theme fatigue sets in faster.</p>
+          </div>
+        </div>
+      </div>
+      <p class="source-note">Sources: Las Vegas Advisor, GM Insights, Mordor Intelligence (2024-2025)</p>
+    </div>
+    <div class="slide-footer">Tithe Gaming PaaS</div>
+  </section>
+
+  <!-- Slide 4: Market Opportunity -->
+  <section class="slide">
+    <div class="scripture-watermark top-right">GENESIS 41:49</div>
+    <div class="scripture-watermark bottom-left">PROVERBS 27:23</div>
+    <div class="slide-header">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">03 / MARKET OPPORTUNITY</div>
+    </div>
+    <div class="content">
+      <p class="tagline">Massive TAM, Clear Tailwinds</p>
+      <h2>A $16.8B Market Growing to $28B by 2034</h2>
+      <div class="three-column" style="margin-top: 24px;">
+        <div class="stat-box">
+          <div class="stat-value">$16.8B</div>
+          <div class="stat-label">2024 Global Market</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value emerald">$28.3B</div>
+          <div class="stat-label">2034 Projection</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">5.6%</div>
+          <div class="stat-label">CAGR 2025-2034</div>
+        </div>
+      </div>
+      <div class="two-column" style="margin-top: 28px;">
+        <div class="card">
+          <h3>Regional Market Share (2024)</h3>
+          <ul>
+            <li><strong>North America</strong> — 34-38% of global market, largest installed base</li>
+            <li><strong>Asia-Pacific</strong> — 28% and fastest growing (12.4% CAGR)</li>
+            <li><strong>Europe</strong> — 25-26% with strict regulatory environment</li>
+            <li><strong>Rest of World</strong> — Emerging casino markets in LatAm, Africa</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <h3>Key Market Drivers</h3>
+          <ul>
+            <li><strong>64% of casinos</strong> — Currently upgrading or planning machine upgrades</li>
+            <li><strong>58% digital adoption</strong> — Shift from mechanical to digital formats</li>
+            <li><strong>58.5% legacy cabinets</strong> — Still running on casino floors (untapped market)</li>
+            <li><strong>46% touchscreen</strong> — Demand for modern UX growing rapidly</li>
+          </ul>
+        </div>
+      </div>
+      <p class="source-note">Sources: GM Insights, Mordor Intelligence, Global Growth Insights (2024-2025)</p>
+    </div>
+    <div class="slide-footer">Tithe Gaming PaaS</div>
+  </section>
+
+  <!-- Slide 5: Our Solution -->
+  <section class="slide">
+    <div class="scripture-watermark top-right">ROMANS 12:11</div>
+    <div class="scripture-watermark bottom-left">PROVERBS 13:11</div>
+    <div class="slide-header">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">04 / OUR SOLUTION</div>
+    </div>
+    <div class="content">
+      <p class="tagline">The "Brain Transplant"</p>
+      <h2>Tithe Gaming PaaS</h2>
+      <p class="subtitle">We replace antiquated, proprietary hardware and software with a modern, secure, and flexible platform.</p>
+      <div class="three-column" style="margin-top: 24px;">
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <h4>AI Refactoring Engine</h4>
+          <p>Proprietary IP that ingests legacy game code (C++, Assembly) and translates it into modular, auditable, platform-agnostic components.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔌</div>
+          <h4>Hardware Abstraction Layer</h4>
+          <p>Custom PCB & drivers enable browser-based software to interface with legacy buttons, bill validators, and coin mechanisms via Web Serial/HID.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h4>Phoenix/LiveView PWA</h4>
+          <p>Kiosk-mode browser on low-cost embedded PC. Real-time interaction with instant visual updates — like server-based gaming, but better.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <h4>Multi-Tenant PaaS</h4>
+          <p>Securely isolates each casino's data and game configurations with a centralized "God Mode" dashboard for floor management.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎨</div>
+          <h4>Smart Signage & Skins</h4>
+          <p>Low-cost, high-impact digital signage overlays and custom vinyl wraps for premium aesthetics on refurbished cabinets.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h4>Real-Time Analytics</h4>
+          <p>AI-powered floor optimization with dynamic RTP adjustments. Server-based control cuts reconfiguration labor by up to 30%.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">Tithe Gaming PaaS</div>
+  </section>
+
+  <!-- Slide 6: Business Model -->
+  <section class="slide">
+    <div class="scripture-watermark top-right">DEUTERONOMY 8:18</div>
+    <div class="scripture-watermark bottom-left">MALACHI 3:10</div>
+    <div class="slide-header">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">05 / BUSINESS MODEL</div>
+    </div>
+    <div class="content">
+      <p class="tagline">Financial Projections</p>
+      <h2>High-Margin Recurring Revenue</h2>
+      <div class="three-column" style="margin-top: 24px;">
+        <div class="card">
+          <h3>Initial Refurbishment</h3>
+          <div style="font-size: 32px; font-weight: 800; color: var(--accent-gold); margin: 14px 0;">$6k – $10k</div>
+          <p><strong>vs. $15k-$25k new</strong> (60-80% savings)</p>
+          <p style="margin-top: 10px; font-size: 12px;">Covers labor, materials, HAL, embedded PC, and signage installation.</p>
+        </div>
+        <div class="card emerald">
+          <h3>Monthly PaaS Subscription</h3>
+          <div style="font-size: 32px; font-weight: 800; background: var(--gradient-emerald); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 14px 0;">$500 – $1,500</div>
+          <p><strong>vs. 70/30 rev share</strong> (casino keeps upside)</p>
+          <p style="margin-top: 10px; font-size: 12px;">Includes hosting, analytics, AI optimization, and theme library access.</p>
+        </div>
+        <div class="card">
+          <h3>Premium Services</h3>
+          <div style="font-size: 32px; font-weight: 800; color: var(--accent-gold); margin: 14px 0;">Custom</div>
+          <p><strong>Enterprise add-ons</strong></p>
+          <p style="margin-top: 10px; font-size: 12px;">A/B testing for themes, advanced player segmentation, custom development.</p>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top: 24px;">
+        <h4>Illustrative Financials — 100-Machine Casino</h4>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 16px;">
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Year 1 Upfront</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">$600K – $1M</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Year 1 Recurring</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">~$1.2M avg</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Gross Margin</div>
+            <div style="font-size: 24px; font-weight: 700; background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">85%+</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Comp: IGT EBITDA</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--accent-emerald-bright);">46.6%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">Tithe Gaming PaaS</div>
+  </section>
+
+  <!-- Slide 7: Investment Ask -->
+  <section class="slide">
+    <div class="scripture-watermark top-right">PHILIPPIANS 4:19</div>
+    <div class="scripture-watermark bottom-left">2 CORINTHIANS 9:8</div>
+    <div class="slide-header">
+      <div class="logo">TITHE GAMING</div>
+      <div class="slide-number">06 / THE ASK</div>
+    </div>
+    <div class="content" style="justify-content: center; align-items: center;">
+      <div class="cta-content">
+        <p class="tagline">Join Us</p>
+        <h1>Let's Build the Future of<br><span class="gradient">Casino Gaming</span></h1>
+        <p class="subtitle" style="text-align: center; margin: 20px auto 32px;">Seeking strategic investment to rapidly scale engineering, secure regulatory approvals, and accelerate market penetration.</p>
+        <div class="card" style="text-align: left; max-width: 580px; margin: 0 auto;">
+          <h3>Funding Will Enable</h3>
+          <ul>
+            <li><strong>AI Refactoring Engine v1.0</strong> — Complete development of proprietary code translation system</li>
+            <li><strong>HAL Certification</strong> — Secure gaming jurisdiction approvals for hardware abstraction layer</li>
+            <li><strong>Sales & Marketing</strong> — Aggressive go-to-market to secure initial casino partnerships</li>
+            <li><strong>Team Expansion</strong> — Scale engineering, compliance, and business development</li>
+          </ul>
+        </div>
+        <div style="margin-top: 32px; display: flex; gap: 36px; justify-content: center;">
+          <div style="text-align: center;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">TAM (2024)</div>
+            <div style="font-size: 28px; font-weight: 800; background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$16.8B</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">TAM (2034)</div>
+            <div style="font-size: 28px; font-weight: 800; background: var(--gradient-emerald); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$28.3B</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Cost Savings</div>
+            <div style="font-size: 28px; font-weight: 800; color: var(--accent-gold);">60-80%</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">PE Validation</div>
+            <div style="font-size: 28px; font-weight: 800; color: var(--accent-emerald-bright);">$4.05B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer" style="text-align: center;">
+      <span style="color: var(--accent-gold);">contact@tithegaming.io</span> &nbsp;&middot;&nbsp; tithegaming.io &nbsp;&middot;&nbsp; &copy; 2026 Tithe Gaming PaaS
+    </div>
+  </section>
+</body></html>

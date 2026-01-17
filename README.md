@@ -82,7 +82,7 @@ Visit [http://localhost:4000](http://localhost:4000)
 ### Admin Login
 
 ```
-Email: Jbulloch@jutilitstechnologies.com
+Email: jbulloch@jutilistechnologies.com
 Password: admin123456789
 ```
 

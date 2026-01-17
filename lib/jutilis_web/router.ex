@@ -23,6 +23,17 @@ defmodule JutilisWeb.Router do
     get "/", PageController, :home
   end
 
+  ## Public investor routes (no auth required)
+  scope "/investors", JutilisWeb do
+    pipe_through :browser
+
+    live_session :public_investor,
+      on_mount: [{JutilisWeb.UserAuth, :mount_current_scope}] do
+      live "/pitch-decks", InvestorLive.PitchDeckIndex, :index
+      live "/pitch-decks/:id", InvestorLive.PitchDeckShow, :show
+    end
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", JutilisWeb do
   #   pipe_through :api
@@ -76,9 +87,12 @@ defmodule JutilisWeb.Router do
   scope "/admin", JutilisWeb do
     pipe_through [:browser, :require_authenticated_user, :require_admin]
 
-    live "/pitch-decks", PitchDeckLive.Index, :index
-    live "/pitch-decks/new", PitchDeckLive.Form, :new
-    live "/pitch-decks/:id", PitchDeckLive.Show, :show
-    live "/pitch-decks/:id/edit", PitchDeckLive.Form, :edit
+    live_session :admin,
+      on_mount: [{JutilisWeb.UserAuth, :ensure_admin}] do
+      live "/pitch-decks", PitchDeckLive.Index, :index
+      live "/pitch-decks/new", PitchDeckLive.Form, :new
+      live "/pitch-decks/:id", PitchDeckLive.Show, :show
+      live "/pitch-decks/:id/edit", PitchDeckLive.Form, :edit
+    end
   end
 end
