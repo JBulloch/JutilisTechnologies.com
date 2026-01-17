@@ -1,0 +1,25 @@
+FROM hexpm/elixir:1.16.0-erlang-26.2.1-debian-bullseye-20231009-slim
+
+# Install dependencies
+RUN apt-get update -y && \
+    apt-get install -y build-essential git curl inotify-tools postgresql-client \
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# Install Node.js for asset building
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
+# Set working directory
+WORKDIR /app
+
+# Install hex and rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+# Install Phoenix
+RUN mix archive.install hex phx_new --force
+
+# Expose port
+EXPOSE 4000
+
+CMD ["mix", "phx.server"]
