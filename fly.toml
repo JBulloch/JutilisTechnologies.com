@@ -2,7 +2,8 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 
 app = 'jutilis'
-primary_region = 'ord'
+primary_region = 'dfw'
+kill_signal = 'SIGTERM'
 
 [build]
 
@@ -10,8 +11,10 @@ primary_region = 'ord'
   release_command = '/app/bin/migrate'
 
 [env]
-  PHX_HOST = 'jutilis.fly.dev'
+  PHX_HOST = 'jutilistechnologies.com'
   PORT = '8080'
+  PHX_SERVER = 'true'
+  ECTO_IPV6 = 'true'
 
 [http_service]
   internal_port = 8080

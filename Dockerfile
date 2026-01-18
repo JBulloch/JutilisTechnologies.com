@@ -51,11 +51,11 @@ COPY lib lib
 
 COPY assets assets
 
-# compile assets
-RUN mix assets.deploy
-
-# Compile the release
+# Compile the project first (required for Phoenix 1.8 colocated hooks)
 RUN mix compile
+
+# compile assets (after compile so colocated hooks are available)
+RUN mix assets.deploy
 
 # Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
