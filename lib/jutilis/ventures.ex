@@ -24,7 +24,48 @@ defmodule Jutilis.Ventures do
   Returns list of active ventures (public).
   """
   def list_active_ventures do
-    Repo.all(from v in Venture, where: v.status == "active", order_by: [asc: v.display_order, asc: v.name])
+    Repo.all(
+      from v in Venture,
+        where: v.status == "active",
+        order_by: [asc: v.display_order, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns list of coming soon ventures (public).
+  """
+  def list_coming_soon_ventures do
+    Repo.all(
+      from v in Venture,
+        where: v.status == "coming_soon",
+        order_by: [asc: v.display_order, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns list of acquired/sold ventures (public).
+  """
+  def list_acquired_ventures do
+    Repo.all(
+      from v in Venture,
+        where: v.status == "acquired",
+        order_by: [desc: v.acquired_date, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns list of public ventures (active + coming_soon).
+  """
+  def list_public_ventures do
+    Repo.all(
+      from v in Venture,
+        where: v.status in ["active", "coming_soon"],
+        order_by: [asc: v.display_order, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
   end
 
   @doc """
@@ -32,6 +73,13 @@ defmodule Jutilis.Ventures do
   """
   def count_active_ventures do
     Repo.one(from v in Venture, where: v.status == "active", select: count(v.id))
+  end
+
+  @doc """
+  Returns the count of public ventures (active + coming_soon).
+  """
+  def count_public_ventures do
+    Repo.one(from v in Venture, where: v.status in ["active", "coming_soon"], select: count(v.id))
   end
 
   @doc """

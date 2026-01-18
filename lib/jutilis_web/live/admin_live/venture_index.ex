@@ -133,6 +133,7 @@ defmodule JutilisWeb.AdminLive.VentureIndex do
   defp status_badge_class("active"), do: "badge badge-success"
   defp status_badge_class("inactive"), do: "badge badge-ghost"
   defp status_badge_class("coming_soon"), do: "badge badge-warning"
+  defp status_badge_class("acquired"), do: "badge badge-secondary"
   defp status_badge_class(_), do: "badge"
 
   @impl true

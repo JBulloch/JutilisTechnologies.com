@@ -3,6 +3,7 @@ defmodule JutilisWeb.AdminLive.VentureForm do
 
   alias Jutilis.Ventures
   alias Jutilis.Ventures.Venture
+  alias Jutilis.PitchDecks
 
   @impl true
   def render(assigns) do
@@ -108,9 +109,58 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                 </label>
                 <select name={@form[:status].name} class="select select-bordered">
                   <option value="active" selected={@form[:status].value == "active"}>Active</option>
-                  <option value="inactive" selected={@form[:status].value == "inactive"}>Inactive</option>
                   <option value="coming_soon" selected={@form[:status].value == "coming_soon"}>Coming Soon</option>
+                  <option value="acquired" selected={@form[:status].value == "acquired"}>Acquired / Sold</option>
+                  <option value="inactive" selected={@form[:status].value == "inactive"}>Inactive</option>
                 </select>
+              </div>
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Featured Pitch Deck</span>
+              </label>
+              <select name={@form[:featured_pitch_deck_id].name} class="select select-bordered">
+                <option value="">No pitch deck selected</option>
+                <%= for pitch_deck <- @pitch_decks do %>
+                  <option value={pitch_deck.id} selected={to_string(@form[:featured_pitch_deck_id].value) == to_string(pitch_deck.id)}>
+                    {pitch_deck.title}
+                  </option>
+                <% end %>
+              </select>
+              <label class="label">
+                <span class="label-text-alt text-base-content/60">The pitch deck to display on the home page for this venture</span>
+              </label>
+            </div>
+
+            <!-- Acquired fields (shown conditionally) -->
+            <div id="acquired-fields" class={if @form[:status].value != "acquired", do: "hidden"}>
+              <div class="divider">Acquisition Details</div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text font-semibold">Acquired By</span>
+                  </label>
+                  <input
+                    type="text"
+                    name={@form[:acquired_by].name}
+                    value={@form[:acquired_by].value}
+                    class="input input-bordered"
+                    placeholder="e.g., Acme Corp"
+                  />
+                </div>
+
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text font-semibold">Acquisition Date</span>
+                  </label>
+                  <input
+                    type="date"
+                    name={@form[:acquired_date].name}
+                    value={@form[:acquired_date].value}
+                    class="input input-bordered"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -214,19 +264,23 @@ defmodule JutilisWeb.AdminLive.VentureForm do
 
   defp apply_action(socket, :new, _params) do
     venture = %Venture{}
+    pitch_decks = PitchDecks.list_pitch_decks(socket.assigns.current_scope)
 
     socket
     |> assign(:page_title, "New Venture")
     |> assign(:venture, venture)
+    |> assign(:pitch_decks, pitch_decks)
     |> assign(:form, to_form(Ventures.change_venture(socket.assigns.current_scope, venture)))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     venture = Ventures.get_venture!(socket.assigns.current_scope, id)
+    pitch_decks = PitchDecks.list_pitch_decks(socket.assigns.current_scope)
 
     socket
     |> assign(:page_title, "Edit #{venture.name}")
     |> assign(:venture, venture)
+    |> assign(:pitch_decks, pitch_decks)
     |> assign(:form, to_form(Ventures.change_venture(socket.assigns.current_scope, venture)))
   end
 
