@@ -9,7 +9,7 @@ defmodule Jutilis.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Jutilis", "contact@example.com"})
+      |> from({"Jutilis Technologies", "noreply@jutilistechnologies.com"})
       |> subject(subject)
       |> text_body(body)
 
