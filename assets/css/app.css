@@ -61,20 +61,21 @@
   name: "light";
   default: true;
   prefersdark: false;
-  color-scheme: "light";
-  /* Jutilis Technologies Light Theme - Emerald & Amber */
-  --color-base-100: #FFFFFF; /* White backgrounds */
-  --color-base-200: #F9FAFB; /* Light gray for subtle backgrounds */
-  --color-base-300: #E5E7EB; /* Slightly darker gray for borders */
-  --color-base-content: #111827; /* Dark gray for readable text */
+  color-scheme: "dark";
+  /* Jutilis Technologies "Light" Theme - Actually Dark Gray Variant */
+  /* This creates a slightly lighter dark theme for subtle variation */
+  --color-base-100: #1A1A1A; /* Medium dark background (vs #0A0A0A in dark) */
+  --color-base-200: #242424; /* Slightly lighter for cards */
+  --color-base-300: #3A3A3A; /* Medium gray for borders */
+  --color-base-content: #F5F5F5; /* Light gray for text */
   --color-primary: #10B981; /* Emerald green for primary */
   --color-primary-content: #FFFFFF; /* White text on emerald */
   --color-secondary: #F59E0B; /* Amber for secondary */
   --color-secondary-content: #000000; /* Black text on amber */
   --color-accent: #10B981; /* Emerald for accents */
   --color-accent-content: #FFFFFF; /* White text on emerald */
-  --color-neutral: #374151; /* Medium gray */
-  --color-neutral-content: #FFFFFF; /* White text on gray */
+  --color-neutral: #4B5563; /* Slightly lighter neutral gray */
+  --color-neutral-content: #F5F5F5; /* Light gray text */
   --color-info: #10B981; /* Use emerald for info */
   --color-info-content: #FFFFFF;
   --color-success: #10B981; /* Emerald for success */
@@ -110,11 +111,8 @@
    Jutilis Technologies Custom Styles
    ============================================ */
 
-/* Ensure proper color scheme inheritance */
-:root[data-theme="light"] {
-  color-scheme: light;
-}
-
+/* Ensure proper color scheme inheritance - both themes are dark */
+:root[data-theme="light"],
 :root[data-theme="dark"] {
   color-scheme: dark;
 }
