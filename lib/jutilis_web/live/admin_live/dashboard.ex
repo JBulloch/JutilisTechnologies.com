@@ -17,105 +17,37 @@ defmodule JutilisWeb.AdminLive.Dashboard do
         
     <!-- Metrics Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <!-- Published Pitch Decks -->
-          <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-success/20">
-                <svg
-                  class="h-6 w-6 text-success"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p class="text-3xl font-black text-base-content">{@published_count}</p>
-                <p class="text-sm font-semibold text-base-content/60">Published</p>
-              </div>
-            </div>
-          </div>
-          
-    <!-- Draft Pitch Decks -->
-          <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-warning/20">
-                <svg
-                  class="h-6 w-6 text-warning"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p class="text-3xl font-black text-base-content">{@draft_count}</p>
-                <p class="text-sm font-semibold text-base-content/60">Drafts</p>
-              </div>
-            </div>
-          </div>
-          
-    <!-- Active Ventures -->
-          <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
-                <svg
-                  class="h-6 w-6 text-primary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p class="text-3xl font-black text-base-content">{@venture_count}</p>
-                <p class="text-sm font-semibold text-base-content/60">Active Ventures</p>
-              </div>
-            </div>
-          </div>
-          
-    <!-- Subscribers -->
-          <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20">
-                <svg
-                  class="h-6 w-6 text-secondary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p class="text-3xl font-black text-base-content">{@subscriber_count}</p>
-                <p class="text-sm font-semibold text-base-content/60">Subscribers</p>
-              </div>
-            </div>
-          </div>
+          <.metric_card value={@published_count} label="Published" color="success">
+            <:icon>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </:icon>
+          </.metric_card>
+
+          <.metric_card value={@draft_count} label="Drafts" color="warning">
+            <:icon>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </:icon>
+          </.metric_card>
+
+          <.metric_card value={@venture_count} label="Active Ventures" color="primary">
+            <:icon>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </:icon>
+          </.metric_card>
+
+          <.metric_card value={@subscriber_count} label="Subscribers" color="secondary">
+            <:icon>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </:icon>
+          </.metric_card>
         </div>
         
     <!-- Quick Actions -->

@@ -52,8 +52,8 @@
             <span class="text-lg font-bold text-base-content hidden sm:block">Jutilis</span>
           </a>
           
-<!-- Desktop Navigation -->
-          <div class="flex items-center gap-4">
+<!-- Desktop Navigation (hidden below lg breakpoint ~1024px) -->
+          <div class="hidden lg:flex items-center gap-4">
             <%= if assigns[:current_scope] && @current_scope && @current_scope.user.admin_flag do %>
               <!-- Admin Navigation -->
               <a
@@ -85,13 +85,13 @@
                 </a>
                 <a
                   href="/portfolio/ventures"
-                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
                 >
                   Ventures
                 </a>
                 <a
                   href="/portfolio/pitch-decks"
-                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
                 >
                   Pitch Decks
                 </a>
@@ -99,20 +99,20 @@
                 <!-- Public Navigation (Logged Out) -->
                 <a
                   href="/#ventures"
-                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
                 >
                   Ventures
                 </a>
                 <a
                   href="/investors/pitch-decks"
-                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
                 >
                   Pitch Decks
                 </a>
               <% end %>
             <% end %>
-            
-<!-- Theme Toggle -->
+
+            <!-- Theme Toggle -->
             <button
               type="button"
               onclick="const html = document.documentElement; const current = html.getAttribute('data-theme'); const newTheme = current === 'dark' ? 'light' : 'dark'; html.setAttribute('data-theme', newTheme); localStorage.setItem('phx:theme', newTheme);"
@@ -147,10 +147,149 @@
               </a>
             <% end %>
           </div>
+
+          <!-- Mobile Navigation (visible below lg breakpoint) -->
+          <div class="flex lg:hidden items-center gap-2">
+            <!-- Theme Toggle (always visible) -->
+            <button
+              type="button"
+              onclick="const html = document.documentElement; const current = html.getAttribute('data-theme'); const newTheme = current === 'dark' ? 'light' : 'dark'; html.setAttribute('data-theme', newTheme); localStorage.setItem('phx:theme', newTheme);"
+              class="rounded-lg p-2 text-base-content/70 hover:text-primary hover:bg-base-200 transition-all"
+              aria-label="Toggle theme"
+            >
+              <svg class="h-5 w-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <svg class="h-5 w-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+              </svg>
+            </button>
+
+            <!-- Hamburger Menu Button -->
+            <button
+              type="button"
+              onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+              class="rounded-lg p-2 text-base-content/70 hover:text-primary hover:bg-base-200 transition-all"
+              aria-label="Open menu"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
+            >
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </nav>
-    
+
+    <!-- Mobile Menu Dropdown (hidden by default) -->
+    <div
+      id="mobile-menu"
+      class="hidden fixed top-16 left-0 right-0 z-40 bg-base-100/95 backdrop-blur-md border-b border-base-300 lg:hidden"
+    >
+      <div class="mx-auto max-w-7xl px-6 py-4 flex flex-col gap-3">
+        <%= if assigns[:current_scope] && @current_scope && @current_scope.user.admin_flag do %>
+          <!-- Admin Navigation -->
+          <a
+            href="/admin/dashboard"
+            class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            Dashboard
+          </a>
+          <a
+            href="/admin/pitch-decks"
+            class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            Pitch Decks
+          </a>
+          <a
+            href="/admin/ventures"
+            class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            Ventures
+          </a>
+        <% else %>
+          <%= if assigns[:current_scope] && @current_scope do %>
+            <!-- Logged-in User Navigation (Portfolio Owner) -->
+            <a
+              href="/portfolio"
+              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+              onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+            >
+              Dashboard
+            </a>
+            <a
+              href="/portfolio/ventures"
+              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+              onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+            >
+              Ventures
+            </a>
+            <a
+              href="/portfolio/pitch-decks"
+              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+              onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+            >
+              Pitch Decks
+            </a>
+          <% else %>
+            <!-- Public Navigation (Logged Out) -->
+            <a
+              href="/#ventures"
+              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+              onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+            >
+              Ventures
+            </a>
+            <a
+              href="/investors/pitch-decks"
+              class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+              onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+            >
+              Pitch Decks
+            </a>
+          <% end %>
+        <% end %>
+
+        <!-- Divider -->
+        <div class="border-t border-base-300 my-1"></div>
+
+        <%= if assigns[:current_scope] && @current_scope do %>
+          <a
+            href="/users/settings"
+            class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            Settings
+          </a>
+          <.link
+            href="/users/log-out"
+            method="delete"
+            class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors py-2"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            Log out
+          </.link>
+        <% else %>
+          <a
+            href="/users/log-in"
+            class="btn btn-primary btn-sm w-full"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            Login
+          </a>
+        <% end %>
+      </div>
+    </div>
+
 <!-- Spacer for fixed nav -->
     <div class="h-16"></div>
 

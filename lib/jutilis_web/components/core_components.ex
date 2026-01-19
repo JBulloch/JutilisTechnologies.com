@@ -468,6 +468,42 @@ defmodule JutilisWeb.CoreComponents do
     )
   end
 
+@doc """
+  Renders a metric card for dashboards.
+
+  ## Examples
+
+      <.metric_card value={5} label="Active Ventures" color="primary">
+        <:icon>
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5..." />
+          </svg>
+        </:icon>
+      </.metric_card>
+  """
+  attr :value, :any, required: true, doc: "the metric value to display"
+  attr :label, :string, required: true, doc: "the label below the value"
+  attr :color, :string, default: "primary", doc: "color theme: primary, success, warning, secondary, error"
+  attr :value_class, :string, default: nil, doc: "optional override for value text classes"
+
+  slot :icon, required: true, doc: "the icon to display"
+
+  def metric_card(assigns) do
+    ~H"""
+    <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
+      <div class="flex items-center gap-4">
+        <div class={"flex h-12 w-12 items-center justify-center rounded-xl bg-#{@color}/20 text-#{@color}"}>
+          {render_slot(@icon)}
+        </div>
+        <div>
+          <p class={@value_class || "text-3xl font-black text-base-content"}>{@value}</p>
+          <p class="text-sm font-semibold text-base-content/60">{@label}</p>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   @doc """
   Translates an error message using gettext.
   """
