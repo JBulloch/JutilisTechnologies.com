@@ -89,3 +89,8 @@ for venture_attrs <- ventures do
     IO.puts("⚠ Venture #{venture_attrs.name} already exists")
   end
 end
+
+# Seed launchpad categories and tools
+IO.puts("\n--- Seeding Launchpad ---")
+Jutilis.Launchpad.seed_defaults!()
+IO.puts("✓ Seeded launchpad categories and tools")

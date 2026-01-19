@@ -3,6 +3,8 @@ defmodule JutilisWeb.AdminLive.VentureShow do
 
   alias Jutilis.Ventures
   alias Jutilis.Ventures.VentureLink
+  alias Jutilis.Launchpad
+  import JutilisWeb.LaunchpadComponents
 
   @impl true
   def render(assigns) do
@@ -20,8 +22,8 @@ defmodule JutilisWeb.AdminLive.VentureShow do
           <div class="flex items-start justify-between">
             <div class="flex items-center gap-4">
               <%= if @venture.icon_svg do %>
-                <div class={"flex h-16 w-16 items-center justify-center rounded-xl bg-#{@venture.color || "primary"}-500 shadow-lg flex-shrink-0"}>
-                  <div class="h-9 w-9 text-white">
+                <div class={"flex h-16 w-16 items-center justify-center rounded-xl bg-#{@venture.color || "primary"}-500 shadow-lg flex-shrink-0 overflow-hidden"}>
+                  <div class="h-9 w-9 text-white flex items-center justify-center [&>svg]:h-full [&>svg]:w-full">
                     {Phoenix.HTML.raw(@venture.icon_svg)}
                   </div>
                 </div>
@@ -83,8 +85,43 @@ defmodule JutilisWeb.AdminLive.VentureShow do
             </div>
           </div>
         </div>
-        
-    <!-- Quick Links Section -->
+
+        <!-- Tab Navigation -->
+        <div class="tabs tabs-boxed bg-base-200 mb-8 p-1 w-fit">
+          <button
+            phx-click="switch_tab"
+            phx-value-tab="links"
+            class={"tab #{if @active_tab == "links", do: "tab-active"}"}
+          >
+            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+              />
+            </svg>
+            My Links
+          </button>
+          <button
+            phx-click="switch_tab"
+            phx-value-tab="roadmap"
+            class={"tab #{if @active_tab == "roadmap", do: "tab-active"}"}
+          >
+            <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+              />
+            </svg>
+            SaaS Launchpad
+          </button>
+        </div>
+
+        <%= if @active_tab == "links" do %>
+          <!-- Quick Links Section -->
         <div class="mb-8">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-bold text-base-content">Quick Links</h2>
@@ -203,47 +240,51 @@ defmodule JutilisWeb.AdminLive.VentureShow do
               <% end %>
             </div>
           <% end %>
-        </div>
-        
-    <!-- Venture Details Card -->
-        <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
-          <h3 class="font-bold text-base-content mb-4">Venture Details</h3>
-          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <dt class="text-sm font-semibold text-base-content/60">Status</dt>
-              <dd class="mt-1">
-                <span class={"badge badge-#{status_badge_color(@venture.status)}"}>
-                  {String.capitalize(@venture.status)}
-                </span>
-              </dd>
-            </div>
-            <div>
-              <dt class="text-sm font-semibold text-base-content/60">Slug</dt>
-              <dd class="mt-1 font-mono text-sm text-base-content">{@venture.slug}</dd>
-            </div>
-            <%= if @venture.url do %>
-              <div class="sm:col-span-2">
-                <dt class="text-sm font-semibold text-base-content/60">Website</dt>
+          </div>
+
+          <!-- Venture Details Card -->
+          <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
+            <h3 class="font-bold text-base-content mb-4">Venture Details</h3>
+            <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <dt class="text-sm font-semibold text-base-content/60">Status</dt>
                 <dd class="mt-1">
-                  <a
-                    href={@venture.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-primary hover:underline"
-                  >
-                    {@venture.url}
-                  </a>
+                  <span class={"badge badge-#{status_badge_color(@venture.status)}"}>
+                    {String.capitalize(@venture.status)}
+                  </span>
                 </dd>
               </div>
-            <% end %>
-            <%= if @venture.description do %>
-              <div class="sm:col-span-2">
-                <dt class="text-sm font-semibold text-base-content/60">Description</dt>
-                <dd class="mt-1 text-base-content/80">{@venture.description}</dd>
+              <div>
+                <dt class="text-sm font-semibold text-base-content/60">Slug</dt>
+                <dd class="mt-1 font-mono text-sm text-base-content">{@venture.slug}</dd>
               </div>
-            <% end %>
-          </dl>
-        </div>
+              <%= if @venture.url do %>
+                <div class="sm:col-span-2">
+                  <dt class="text-sm font-semibold text-base-content/60">Website</dt>
+                  <dd class="mt-1">
+                    <a
+                      href={@venture.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-primary hover:underline"
+                    >
+                      {@venture.url}
+                    </a>
+                  </dd>
+                </div>
+              <% end %>
+              <%= if @venture.description do %>
+                <div class="sm:col-span-2">
+                  <dt class="text-sm font-semibold text-base-content/60">Description</dt>
+                  <dd class="mt-1 text-base-content/80">{@venture.description}</dd>
+                </div>
+              <% end %>
+            </dl>
+          </div>
+        <% else %>
+          <!-- SaaS Launchpad Roadmap -->
+          <.roadmap roadmap={@roadmap} user_links={@venture.links} />
+        <% end %>
       </div>
     </div>
 
@@ -443,23 +484,30 @@ defmodule JutilisWeb.AdminLive.VentureShow do
   def mount(%{"id" => id}, _session, socket) do
     venture = Ventures.get_venture_with_links!(socket.assigns.current_scope, id)
     links_by_category = Ventures.get_links_by_category(venture)
+    roadmap = Launchpad.get_roadmap()
 
     {:ok,
      socket
      |> assign(:page_title, venture.name)
      |> assign(:venture, venture)
      |> assign(:links_by_category, links_by_category)
+     |> assign(:roadmap, roadmap)
+     |> assign(:active_tab, "links")
      |> assign(:show_link_modal, false)
      |> assign(:editing_link, nil)
      |> assign(:link_form, nil)}
   end
 
   @impl true
+  def handle_event("switch_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, :active_tab, tab)}
+  end
+
   def handle_event("show_add_link", _params, socket) do
     changeset =
       Ventures.change_venture_link(socket.assigns.current_scope, %VentureLink{
         venture_id: socket.assigns.venture.id,
-        category: "development"
+        category: "code-repos"
       })
 
     {:noreply,

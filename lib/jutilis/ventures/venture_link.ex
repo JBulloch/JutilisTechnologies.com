@@ -2,14 +2,29 @@ defmodule Jutilis.Ventures.VentureLink do
   use Ecto.Schema
   import Ecto.Changeset
 
+  # Categories aligned with launchpad slugs for integration
   @categories [
-    "development",
-    "hosting",
-    "business",
-    "domains",
+    # Planning phase
+    "legal",
     "banking",
+    "domains",
+    "learning",
+    # Building phase
+    "planning-design",
+    "code-repos",
     "workspace",
-    "mdm",
+    "ai-tools",
+    "hosting",
+    "ci-cd",
+    "email",
+    "error-monitoring",
+    # Maintaining phase
+    "customer-support",
+    "analytics",
+    "marketing-ads",
+    "social-media",
+    "crm-email-marketing",
+    # Legacy/catch-all
     "other"
   ]
 
@@ -30,26 +45,49 @@ defmodule Jutilis.Ventures.VentureLink do
 
   def category_labels do
     [
-      {"Development", "development"},
-      {"Hosting", "hosting"},
-      {"Business & Legal", "business"},
-      {"Domains", "domains"},
+      # Planning
+      {"Legal Structure", "legal"},
       {"Banking", "banking"},
-      {"Workspace", "workspace"},
-      {"MDM / Device Management", "mdm"},
+      {"Domains", "domains"},
+      {"Learning", "learning"},
+      # Building
+      {"Planning & Design", "planning-design"},
+      {"Code Repos", "code-repos"},
+      {"Workspace & Dev Environment", "workspace"},
+      {"AI Tools", "ai-tools"},
+      {"Hosting", "hosting"},
+      {"CI/CD", "ci-cd"},
+      {"Email (Transactional)", "email"},
+      {"Error Monitoring", "error-monitoring"},
+      # Maintaining
+      {"Customer Support", "customer-support"},
+      {"Analytics", "analytics"},
+      {"Marketing & Paid Ads", "marketing-ads"},
+      {"Social Media & Community", "social-media"},
+      {"CRM & Email Marketing", "crm-email-marketing"},
       {"Other", "other"}
     ]
   end
 
   def category_icons do
     %{
-      "development" => "code-bracket",
-      "hosting" => "server",
-      "business" => "building-office",
-      "domains" => "globe-alt",
+      "legal" => "scale",
       "banking" => "banknotes",
+      "domains" => "globe-alt",
+      "learning" => "academic-cap",
+      "planning-design" => "squares-2x2",
+      "code-repos" => "code-bracket",
       "workspace" => "computer-desktop",
-      "mdm" => "device-phone-mobile",
+      "ai-tools" => "sparkles",
+      "hosting" => "server",
+      "ci-cd" => "arrow-path",
+      "email" => "envelope",
+      "error-monitoring" => "exclamation-triangle",
+      "customer-support" => "chat-bubble-left-right",
+      "analytics" => "chart-pie",
+      "marketing-ads" => "megaphone",
+      "social-media" => "share",
+      "crm-email-marketing" => "user-group",
       "other" => "link"
     }
   end

@@ -141,6 +141,14 @@ defmodule JutilisWeb.Router do
       live "/ventures/new", AdminLive.VentureForm, :new
       live "/ventures/:id", AdminLive.VentureShow, :show
       live "/ventures/:id/edit", AdminLive.VentureForm, :edit
+
+      # Launchpad tool management
+      live "/launchpad/tools", AdminLive.LaunchpadTools, :index
+      live "/launchpad/tools/new", AdminLive.LaunchpadTools, :new
+      live "/launchpad/tools/:id/edit", AdminLive.LaunchpadTools, :edit
+      live "/launchpad/categories", AdminLive.LaunchpadCategories, :index
+      live "/launchpad/categories/new", AdminLive.LaunchpadCategories, :new
+      live "/launchpad/categories/:id/edit", AdminLive.LaunchpadCategories, :edit
     end
   end
 end
