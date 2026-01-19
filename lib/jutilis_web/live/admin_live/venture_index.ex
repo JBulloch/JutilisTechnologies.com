@@ -15,7 +15,12 @@ defmodule JutilisWeb.AdminLive.VentureIndex do
           </div>
           <.link navigate={~p"/admin/ventures/new"} class="btn btn-primary">
             <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
             </svg>
             New Venture
           </.link>
@@ -50,32 +55,32 @@ defmodule JutilisWeb.AdminLive.VentureIndex do
                 class="rounded-2xl border-2 border-base-300 bg-base-100 p-6 hover:border-primary transition-all"
               >
                 <.link navigate={~p"/admin/ventures/#{venture}"} class="block">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="flex items-center gap-3">
-                    <div class={"flex h-12 w-12 items-center justify-center rounded-xl bg-#{venture.color || "primary"}-500 text-white"}>
-                      <%= if venture.icon_svg do %>
-                        <%= Phoenix.HTML.raw(venture.icon_svg) %>
-                      <% else %>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"
-                          />
-                        </svg>
-                      <% end %>
+                  <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                      <div class={"flex h-12 w-12 items-center justify-center rounded-xl bg-#{venture.color || "primary"}-500 text-white"}>
+                        <%= if venture.icon_svg do %>
+                          {Phoenix.HTML.raw(venture.icon_svg)}
+                        <% else %>
+                          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"
+                            />
+                          </svg>
+                        <% end %>
+                      </div>
+                      <div>
+                        <h3 class="text-lg font-bold text-base-content">{venture.name}</h3>
+                        <p class="text-sm text-base-content/60">{venture.slug}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 class="text-lg font-bold text-base-content">{venture.name}</h3>
-                      <p class="text-sm text-base-content/60">{venture.slug}</p>
-                    </div>
+                    <span class={status_badge_class(venture.status)}>
+                      {venture.status}
+                    </span>
                   </div>
-                  <span class={status_badge_class(venture.status)}>
-                    {venture.status}
-                  </span>
-                </div>
-              </.link>
+                </.link>
 
                 <%= if venture.tagline do %>
                   <p class="text-sm text-base-content/70 mb-4">{venture.tagline}</p>

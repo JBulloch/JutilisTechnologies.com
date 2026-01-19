@@ -21,10 +21,11 @@ defmodule Jutilis.Release do
     load_app()
 
     for repo <- repos() do
-      {:ok, _, _} = Ecto.Migrator.with_repo(repo, fn _repo ->
-        seed_admin()
-        seed_ventures()
-      end)
+      {:ok, _, _} =
+        Ecto.Migrator.with_repo(repo, fn _repo ->
+          seed_admin()
+          seed_ventures()
+        end)
     end
   end
 
@@ -72,7 +73,8 @@ defmodule Jutilis.Release do
         name: "Cards Co-op",
         slug: "cards-co-op",
         tagline: "Community Trading Card Marketplace",
-        description: "Create, share, and play custom card games in an innovative co-op experience. Connect with collectors, trade cards, and build your collection in a community-driven marketplace.",
+        description:
+          "Create, share, and play custom card games in an innovative co-op experience. Connect with collectors, trade cards, and build your collection in a community-driven marketplace.",
         url: "https://cards-co-op.com",
         status: "active",
         icon_svg: cards_coop_svg,
@@ -84,7 +86,8 @@ defmodule Jutilis.Release do
         name: "GoDerby",
         slug: "go-derby",
         tagline: "Demolition Derby Platform",
-        description: "Run your derby like a pro. The complete platform for demolition derby event management. Registration, payments, live timing, and results — all in one place.",
+        description:
+          "Run your derby like a pro. The complete platform for demolition derby event management. Registration, payments, live timing, and results — all in one place.",
         url: "https://go-derby.com",
         status: "active",
         icon_svg: go_derby_svg,

@@ -22,7 +22,16 @@ defmodule Jutilis.PitchDecks.PitchDeck do
   @doc false
   def changeset(pitch_deck, attrs) do
     pitch_deck
-    |> cast(attrs, [:title, :description, :file_url, :html_content, :status, :venture, :venture_id, :user_id])
+    |> cast(attrs, [
+      :title,
+      :description,
+      :file_url,
+      :html_content,
+      :status,
+      :venture,
+      :venture_id,
+      :user_id
+    ])
     |> validate_required([:title, :status, :user_id])
     |> validate_inclusion(:status, @valid_statuses)
     |> validate_length(:title, min: 3, max: 255)

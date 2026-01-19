@@ -13,14 +13,34 @@ defmodule JutilisWeb.Router do
     plug :fetch_current_scope_for_user
   end
 
+  # Browser pipeline with portfolio resolution for public portfolio pages
+  pipeline :portfolio do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {JutilisWeb.Layouts, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug :fetch_current_scope_for_user
+    plug JutilisWeb.Plugs.PortfolioResolver
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  # Portfolio home page - resolved by custom domain or flagship
   scope "/", JutilisWeb do
-    pipe_through :browser
+    pipe_through :portfolio
 
-    get "/", PageController, :home
+    get "/", PortfolioController, :home
+  end
+
+  # Path-based portfolio access: /p/:slug
+  scope "/p", JutilisWeb do
+    pipe_through :portfolio
+
+    get "/:portfolio_slug", PortfolioController, :home
   end
 
   scope "/investors", JutilisWeb do
@@ -64,7 +84,12 @@ defmodule JutilisWeb.Router do
 
   ## Authentication routes
 
-  # Registration disabled - single admin user only
+  scope "/", JutilisWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/users/register", UserRegistrationController, :new
+    post "/users/register", UserRegistrationController, :create
+  end
 
   scope "/", JutilisWeb do
     pipe_through [:browser, :require_authenticated_user]
@@ -72,6 +97,23 @@ defmodule JutilisWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
+  end
+
+  ## User portfolio management routes (for regular users to manage their own portfolio)
+  scope "/portfolio", JutilisWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :portfolio_owner,
+      on_mount: [{JutilisWeb.UserAuth, :ensure_authenticated}] do
+      live "/", PortfolioLive.Dashboard, :index
+      live "/settings", PortfolioLive.Settings, :edit
+      live "/ventures", PortfolioLive.VentureIndex, :index
+      live "/ventures/new", PortfolioLive.VentureForm, :new
+      live "/ventures/:id/edit", PortfolioLive.VentureForm, :edit
+      live "/pitch-decks", PortfolioLive.PitchDeckIndex, :index
+      live "/pitch-decks/new", PortfolioLive.PitchDeckForm, :new
+      live "/pitch-decks/:id/edit", PortfolioLive.PitchDeckForm, :edit
+    end
   end
 
   scope "/", JutilisWeb do

@@ -7,13 +7,15 @@ defmodule Jutilis.Subscribers.Subscriber do
     field :name, :string
     field :subscribed_at, :utc_datetime
 
+    belongs_to :portfolio, Jutilis.Portfolios.Portfolio
+
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(subscriber, attrs) do
     subscriber
-    |> cast(attrs, [:email, :name])
+    |> cast(attrs, [:email, :name, :portfolio_id])
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must be a valid email address")
     |> unique_constraint(:email)

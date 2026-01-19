@@ -82,6 +82,110 @@ defmodule Jutilis.Ventures do
     Repo.one(from v in Venture, where: v.status in ["active", "coming_soon"], select: count(v.id))
   end
 
+  # =============================================================================
+  # Portfolio-scoped queries
+  # =============================================================================
+
+  @doc """
+  Returns list of ventures for a specific portfolio.
+  """
+  def list_ventures_for_portfolio(portfolio_id) do
+    Repo.all(
+      from v in Venture,
+        where: v.portfolio_id == ^portfolio_id,
+        order_by: [asc: v.display_order, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns list of active ventures for a specific portfolio.
+  """
+  def list_active_ventures_for_portfolio(portfolio_id) do
+    Repo.all(
+      from v in Venture,
+        where: v.portfolio_id == ^portfolio_id and v.status == "active",
+        order_by: [asc: v.display_order, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns list of coming soon ventures for a specific portfolio.
+  """
+  def list_coming_soon_ventures_for_portfolio(portfolio_id) do
+    Repo.all(
+      from v in Venture,
+        where: v.portfolio_id == ^portfolio_id and v.status == "coming_soon",
+        order_by: [asc: v.display_order, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns list of acquired ventures for a specific portfolio.
+  """
+  def list_acquired_ventures_for_portfolio(portfolio_id) do
+    Repo.all(
+      from v in Venture,
+        where: v.portfolio_id == ^portfolio_id and v.status == "acquired",
+        order_by: [desc: v.acquired_date, asc: v.name],
+        preload: [:featured_pitch_deck]
+    )
+  end
+
+  @doc """
+  Returns the count of ventures for a specific portfolio.
+  """
+  def count_ventures_for_portfolio(portfolio_id) do
+    Repo.one(
+      from v in Venture,
+        where: v.portfolio_id == ^portfolio_id and v.status in ["active", "coming_soon"],
+        select: count(v.id)
+    )
+  end
+
+  @doc """
+  Gets a single venture by id for a specific portfolio.
+  """
+  def get_venture_for_portfolio!(portfolio_id, id) do
+    Repo.one!(
+      from v in Venture,
+        where: v.id == ^id and v.portfolio_id == ^portfolio_id
+    )
+  end
+
+  @doc """
+  Creates a venture for a specific portfolio.
+  """
+  def create_venture_for_portfolio(portfolio_id, attrs) do
+    %Venture{portfolio_id: portfolio_id}
+    |> Venture.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a venture belonging to a portfolio.
+  """
+  def update_venture_for_portfolio(portfolio_id, %Venture{portfolio_id: pid} = venture, attrs)
+      when portfolio_id == pid do
+    venture
+    |> Venture.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_venture_for_portfolio(_portfolio_id, _venture, _attrs), do: {:error, :unauthorized}
+
+  @doc """
+  Deletes a venture belonging to a portfolio.
+  """
+  def delete_venture_for_portfolio(portfolio_id, %Venture{portfolio_id: pid} = venture)
+      when portfolio_id == pid do
+    Repo.delete(venture)
+  end
+
+  def delete_venture_for_portfolio(_portfolio_id, _venture), do: {:error, :unauthorized}
+
   @doc """
   Gets a single venture by id for admin users.
   """
@@ -97,7 +201,10 @@ defmodule Jutilis.Ventures do
   def get_venture_with_links!(%Scope{user: %User{admin_flag: true}}, id) do
     Venture
     |> Repo.get!(id)
-    |> Repo.preload(links: from(l in VentureLink, order_by: [asc: l.category, asc: l.display_order, asc: l.name]))
+    |> Repo.preload(
+      links:
+        from(l in VentureLink, order_by: [asc: l.category, asc: l.display_order, asc: l.name])
+    )
   end
 
   def get_venture_with_links!(_scope, _id), do: raise(Ecto.NoResultsError, queryable: Venture)

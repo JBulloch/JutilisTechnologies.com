@@ -3,6 +3,7 @@ defmodule JutilisWeb.UserRegistrationController do
 
   alias Jutilis.Accounts
   alias Jutilis.Accounts.User
+  alias JutilisWeb.UrlHelpers
 
   def new(conn, _params) do
     changeset = Accounts.change_user_email(%User{})
@@ -15,7 +16,7 @@ defmodule JutilisWeb.UserRegistrationController do
         {:ok, _} =
           Accounts.deliver_login_instructions(
             user,
-            &url(~p"/users/log-in/#{&1}")
+            &UrlHelpers.url_from_conn(conn, ~p"/users/log-in/#{&1}")
           )
 
         conn

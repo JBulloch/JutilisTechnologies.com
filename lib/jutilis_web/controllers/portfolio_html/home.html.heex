@@ -1,0 +1,59 @@
+<Layouts.flash_group flash={@flash} />
+<div class="min-h-screen bg-base-100">
+  <%!-- Hero Section --%>
+  <PortfolioComponents.hero_section
+    portfolio={@portfolio}
+    venture_count={length(@active_ventures)}
+  />
+
+  <%!-- Active Ventures Section --%>
+  <%= if PortfolioComponents.section_enabled?(@portfolio, :ventures) && Enum.any?(@active_ventures) do %>
+    <PortfolioComponents.ventures_section
+      ventures={@active_ventures}
+      title="Active Ventures"
+      subtitle="OUR PORTFOLIO"
+      description="Multi-tenant SaaS platforms serving thriving communities"
+      bg_class="bg-base-200"
+      label_color="primary"
+    />
+  <% end %>
+
+  <%!-- Coming Soon Ventures --%>
+  <%= if PortfolioComponents.section_enabled?(@portfolio, :ventures) && Enum.any?(@coming_soon_ventures) do %>
+    <PortfolioComponents.ventures_section
+      ventures={@coming_soon_ventures}
+      title="Coming Soon"
+      subtitle="IN DEVELOPMENT"
+      description="Exciting new ventures currently in development"
+      bg_class="bg-base-100"
+      label_color="warning"
+      coming_soon={true}
+    />
+  <% end %>
+
+  <%!-- Acquired/Sold Ventures --%>
+  <%= if PortfolioComponents.section_enabled?(@portfolio, :ventures) do %>
+    <PortfolioComponents.acquired_ventures_section ventures={@acquired_ventures} />
+  <% end %>
+
+  <%!-- About Section --%>
+  <%= if PortfolioComponents.section_enabled?(@portfolio, :about) do %>
+    <PortfolioComponents.about_section
+      portfolio={@portfolio}
+      venture_count={length(@active_ventures)}
+    />
+  <% end %>
+
+  <%!-- Investment Section --%>
+  <%= if PortfolioComponents.section_enabled?(@portfolio, :investment) && @portfolio.investment_enabled do %>
+    <PortfolioComponents.investment_section portfolio={@portfolio} />
+  <% end %>
+
+  <%!-- Consulting Section --%>
+  <%= if PortfolioComponents.section_enabled?(@portfolio, :consulting) && @portfolio.consulting_enabled do %>
+    <PortfolioComponents.consulting_section portfolio={@portfolio} />
+  <% end %>
+
+  <%!-- Footer --%>
+  <PortfolioComponents.footer_section portfolio={@portfolio} />
+</div>

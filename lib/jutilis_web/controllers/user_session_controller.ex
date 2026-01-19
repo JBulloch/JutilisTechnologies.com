@@ -2,6 +2,7 @@ defmodule JutilisWeb.UserSessionController do
   use JutilisWeb, :controller
 
   alias Jutilis.Accounts
+  alias JutilisWeb.UrlHelpers
   alias JutilisWeb.UserAuth
 
   def new(conn, _params) do
@@ -53,7 +54,7 @@ defmodule JutilisWeb.UserSessionController do
     if user = Accounts.get_user_by_email(email) do
       Accounts.deliver_login_instructions(
         user,
-        &url(~p"/users/log-in/#{&1}")
+        &UrlHelpers.url_from_conn(conn, ~p"/users/log-in/#{&1}")
       )
     end
 

@@ -16,11 +16,19 @@ config :jutilis, Jutilis.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we can use it
 # to bundle .js and .css sources.
+#
+# PHX_HOST can be set for environments like GitHub Codespaces where
+# the app is accessed via a forwarded URL (e.g., xxx-4000.app.github.dev)
 config :jutilis, JutilisWeb.Endpoint,
   # Bind to 0.0.0.0 to expose the server to the docker host machine.
   # This makes make the service accessible from any network interface.
   # Change to `ip: {127, 0, 0, 1}` to allow access only from the server machine.
   http: [ip: {0, 0, 0, 0}],
+  url: [
+    host: System.get_env("PHX_HOST", "localhost"),
+    port: String.to_integer(System.get_env("PHX_PORT", "4000")),
+    scheme: System.get_env("PHX_SCHEME", "http")
+  ],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

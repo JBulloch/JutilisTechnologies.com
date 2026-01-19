@@ -17,7 +17,8 @@ defmodule JutilisWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt site.webmanifest apple-touch-icon.png)
+  def static_paths,
+    do: ~w(assets fonts images favicon.ico robots.txt site.webmanifest apple-touch-icon.png)
 
   def router do
     quote do

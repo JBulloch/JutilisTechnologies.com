@@ -2,12 +2,18 @@
   <div class="mx-auto max-w-sm space-y-4">
     <div class="text-center">
       <.header>
-        <p>Admin Login</p>
+        Log in
         <:subtitle>
           <%= if @current_scope do %>
             You need to reauthenticate to perform sensitive actions on your account.
           <% else %>
-            Sign in to access the admin dashboard.
+            Don't have an account?
+            <.link
+              navigate={~p"/users/register"}
+              class="font-semibold text-primary hover:underline"
+            >
+              Sign up
+            </.link>
           <% end %>
         </:subtitle>
       </.header>

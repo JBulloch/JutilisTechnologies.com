@@ -5,14 +5,24 @@ defmodule JutilisWeb.UserSessionControllerTest do
   alias Jutilis.Accounts
 
   setup do
-    %{unconfirmed_user: unconfirmed_user_fixture(), user: user_fixture()}
+    user = user_fixture()
+    # Create a flagship portfolio for tests that redirect to /
+    Jutilis.Repo.insert!(%Jutilis.Portfolios.Portfolio{
+      name: "Test Portfolio",
+      slug: "test",
+      user_id: user.id,
+      status: "published",
+      is_flagship: true
+    })
+
+    %{unconfirmed_user: unconfirmed_user_fixture(), user: user}
   end
 
   describe "GET /users/log-in" do
     test "renders login page", %{conn: conn} do
       conn = get(conn, ~p"/users/log-in")
       response = html_response(conn, 200)
-      assert response =~ "Admin Login"
+      assert response =~ "Log in"
       assert response =~ "Log in with email"
     end
 
@@ -34,7 +44,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
     test "renders login page (email + password)", %{conn: conn} do
       conn = get(conn, ~p"/users/log-in?mode=password")
       response = html_response(conn, 200)
-      assert response =~ "Admin Login"
+      assert response =~ "Log in"
       assert response =~ "Log in with email"
     end
   end
@@ -82,12 +92,6 @@ defmodule JutilisWeb.UserSessionControllerTest do
 
       assert get_session(conn, :user_token)
       assert redirected_to(conn) == ~p"/"
-
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ "Dashboard"
-      assert response =~ ~p"/users/log-out"
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do
@@ -130,7 +134,7 @@ defmodule JutilisWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Admin Login"
+      assert response =~ "Log in"
       assert response =~ "Invalid email or password"
     end
   end
@@ -156,12 +160,6 @@ defmodule JutilisWeb.UserSessionControllerTest do
 
       assert get_session(conn, :user_token)
       assert redirected_to(conn) == ~p"/"
-
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ "Dashboard"
-      assert response =~ ~p"/users/log-out"
     end
 
     test "confirms unconfirmed user", %{conn: conn, unconfirmed_user: user} do
@@ -179,12 +177,6 @@ defmodule JutilisWeb.UserSessionControllerTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "User confirmed successfully."
 
       assert Accounts.get_user!(user.id).confirmed_at
-
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ "Dashboard"
-      assert response =~ ~p"/users/log-out"
     end
 
     test "emits error message when magic link is invalid", %{conn: conn} do

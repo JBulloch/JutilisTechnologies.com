@@ -11,9 +11,17 @@ defmodule JutilisWeb.AdminLive.VentureForm do
     <div class="min-h-screen bg-base-100">
       <div class="mx-auto max-w-3xl px-6 py-8 lg:px-8">
         <div class="mb-8">
-          <.link navigate={~p"/admin/ventures"} class="text-sm text-base-content/60 hover:text-primary flex items-center gap-1 mb-4">
+          <.link
+            navigate={~p"/admin/ventures"}
+            class="text-sm text-base-content/60 hover:text-primary flex items-center gap-1 mb-4"
+          >
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Ventures
           </.link>
@@ -59,7 +67,9 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                   placeholder="e.g., cards-co-op"
                 />
                 <label class="label">
-                  <span class="label-text-alt text-base-content/60">Used in URLs and for identification</span>
+                  <span class="label-text-alt text-base-content/60">
+                    Used in URLs and for identification
+                  </span>
                 </label>
                 <.field_errors field={@form[:slug]} />
               </div>
@@ -109,9 +119,15 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                 </label>
                 <select name={@form[:status].name} class="select select-bordered">
                   <option value="active" selected={@form[:status].value == "active"}>Active</option>
-                  <option value="coming_soon" selected={@form[:status].value == "coming_soon"}>Coming Soon</option>
-                  <option value="acquired" selected={@form[:status].value == "acquired"}>Acquired / Sold</option>
-                  <option value="inactive" selected={@form[:status].value == "inactive"}>Inactive</option>
+                  <option value="coming_soon" selected={@form[:status].value == "coming_soon"}>
+                    Coming Soon
+                  </option>
+                  <option value="acquired" selected={@form[:status].value == "acquired"}>
+                    Acquired / Sold
+                  </option>
+                  <option value="inactive" selected={@form[:status].value == "inactive"}>
+                    Inactive
+                  </option>
                 </select>
               </div>
             </div>
@@ -123,17 +139,24 @@ defmodule JutilisWeb.AdminLive.VentureForm do
               <select name={@form[:featured_pitch_deck_id].name} class="select select-bordered">
                 <option value="">No pitch deck selected</option>
                 <%= for pitch_deck <- @pitch_decks do %>
-                  <option value={pitch_deck.id} selected={to_string(@form[:featured_pitch_deck_id].value) == to_string(pitch_deck.id)}>
+                  <option
+                    value={pitch_deck.id}
+                    selected={
+                      to_string(@form[:featured_pitch_deck_id].value) == to_string(pitch_deck.id)
+                    }
+                  >
                     {pitch_deck.title}
                   </option>
                 <% end %>
               </select>
               <label class="label">
-                <span class="label-text-alt text-base-content/60">The pitch deck to display on the home page for this venture</span>
+                <span class="label-text-alt text-base-content/60">
+                  The pitch deck to display on the home page for this venture
+                </span>
               </label>
             </div>
-
-            <!-- Acquired fields (shown conditionally) -->
+            
+    <!-- Acquired fields (shown conditionally) -->
             <div id="acquired-fields" class={if @form[:status].value != "acquired", do: "hidden"}>
               <div class="divider">Acquisition Details</div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -191,10 +214,18 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                 </label>
                 <select name={@form[:badge_color].name} class="select select-bordered">
                   <option value="">Select a badge color...</option>
-                  <option value="primary" selected={@form[:badge_color].value == "primary"}>Primary</option>
-                  <option value="secondary" selected={@form[:badge_color].value == "secondary"}>Secondary</option>
-                  <option value="success" selected={@form[:badge_color].value == "success"}>Success</option>
-                  <option value="warning" selected={@form[:badge_color].value == "warning"}>Warning</option>
+                  <option value="primary" selected={@form[:badge_color].value == "primary"}>
+                    Primary
+                  </option>
+                  <option value="secondary" selected={@form[:badge_color].value == "secondary"}>
+                    Secondary
+                  </option>
+                  <option value="success" selected={@form[:badge_color].value == "success"}>
+                    Success
+                  </option>
+                  <option value="warning" selected={@form[:badge_color].value == "warning"}>
+                    Warning
+                  </option>
                   <option value="error" selected={@form[:badge_color].value == "error"}>Error</option>
                 </select>
               </div>
@@ -226,7 +257,9 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                 placeholder="<svg>...</svg>"
               >{@form[:icon_svg].value}</textarea>
               <label class="label">
-                <span class="label-text-alt text-base-content/60">Paste raw SVG code for the venture icon</span>
+                <span class="label-text-alt text-base-content/60">
+                  Paste raw SVG code for the venture icon
+                </span>
               </label>
             </div>
           </div>
@@ -287,7 +320,11 @@ defmodule JutilisWeb.AdminLive.VentureForm do
   @impl true
   def handle_event("validate", %{"venture" => venture_params}, socket) do
     changeset =
-      Ventures.change_venture(socket.assigns.current_scope, socket.assigns.venture, venture_params)
+      Ventures.change_venture(
+        socket.assigns.current_scope,
+        socket.assigns.venture,
+        venture_params
+      )
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, form: to_form(changeset))}
@@ -311,7 +348,11 @@ defmodule JutilisWeb.AdminLive.VentureForm do
   end
 
   defp save_venture(socket, :edit, venture_params) do
-    case Ventures.update_venture(socket.assigns.current_scope, socket.assigns.venture, venture_params) do
+    case Ventures.update_venture(
+           socket.assigns.current_scope,
+           socket.assigns.venture,
+           venture_params
+         ) do
       {:ok, _venture} ->
         {:noreply,
          socket

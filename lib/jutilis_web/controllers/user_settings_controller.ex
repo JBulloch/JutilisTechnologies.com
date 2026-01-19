@@ -2,6 +2,7 @@ defmodule JutilisWeb.UserSettingsController do
   use JutilisWeb, :controller
 
   alias Jutilis.Accounts
+  alias JutilisWeb.UrlHelpers
   alias JutilisWeb.UserAuth
 
   import JutilisWeb.UserAuth, only: [require_sudo_mode: 2]
@@ -22,7 +23,7 @@ defmodule JutilisWeb.UserSettingsController do
         Accounts.deliver_user_update_email_instructions(
           Ecto.Changeset.apply_action!(changeset, :insert),
           user.email,
-          &url(~p"/users/settings/confirm-email/#{&1}")
+          &UrlHelpers.url_from_conn(conn, ~p"/users/settings/confirm-email/#{&1}")
         )
 
         conn

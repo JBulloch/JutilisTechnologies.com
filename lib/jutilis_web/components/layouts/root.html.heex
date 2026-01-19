@@ -54,7 +54,7 @@
           
 <!-- Desktop Navigation -->
           <div class="flex items-center gap-4">
-            <%= if assigns[:current_scope] && @current_scope do %>
+            <%= if assigns[:current_scope] && @current_scope && @current_scope.user.admin_flag do %>
               <!-- Admin Navigation -->
               <a
                 href="/admin/dashboard"
@@ -75,19 +75,41 @@
                 Ventures
               </a>
             <% else %>
-              <!-- Public Navigation -->
-              <a
-                href="/#ventures"
-                class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
-              >
-                Ventures
-              </a>
-              <a
-                href="/investors/pitch-decks"
-                class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
-              >
-                Pitch Decks
-              </a>
+              <%= if assigns[:current_scope] && @current_scope do %>
+                <!-- Logged-in User Navigation (Portfolio Owner) -->
+                <a
+                  href="/portfolio"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
+                >
+                  Dashboard
+                </a>
+                <a
+                  href="/portfolio/ventures"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                >
+                  Ventures
+                </a>
+                <a
+                  href="/portfolio/pitch-decks"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                >
+                  Pitch Decks
+                </a>
+              <% else %>
+                <!-- Public Navigation (Logged Out) -->
+                <a
+                  href="/#ventures"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                >
+                  Ventures
+                </a>
+                <a
+                  href="/investors/pitch-decks"
+                  class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors hidden md:block"
+                >
+                  Pitch Decks
+                </a>
+              <% end %>
             <% end %>
             
 <!-- Theme Toggle -->
@@ -110,12 +132,18 @@
             </button>
 
             <%= if assigns[:current_scope] && @current_scope do %>
+              <a
+                href="/users/settings"
+                class="text-sm font-semibold text-base-content/70 hover:text-primary transition-colors"
+              >
+                Settings
+              </a>
               <.link href="/users/log-out" method="delete" class="btn btn-ghost btn-sm">
                 Log out
               </.link>
             <% else %>
               <a href="/users/log-in" class="btn btn-primary btn-sm">
-                Admin
+                Login
               </a>
             <% end %>
           </div>

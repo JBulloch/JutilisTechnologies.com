@@ -18,6 +18,7 @@ defmodule Jutilis.Ventures.Venture do
     field :acquired_date, :date
     field :acquired_by, :string
 
+    belongs_to :portfolio, Jutilis.Portfolios.Portfolio
     belongs_to :featured_pitch_deck, Jutilis.PitchDecks.PitchDeck
     has_many :pitch_decks, Jutilis.PitchDecks.PitchDeck, foreign_key: :venture_id
     has_many :links, Jutilis.Ventures.VentureLink
@@ -30,7 +31,22 @@ defmodule Jutilis.Ventures.Venture do
   @doc false
   def changeset(venture, attrs) do
     venture
-    |> cast(attrs, [:name, :slug, :tagline, :description, :url, :status, :icon_svg, :color, :badge_color, :display_order, :featured_pitch_deck_id, :acquired_date, :acquired_by])
+    |> cast(attrs, [
+      :name,
+      :slug,
+      :tagline,
+      :description,
+      :url,
+      :status,
+      :icon_svg,
+      :color,
+      :badge_color,
+      :display_order,
+      :featured_pitch_deck_id,
+      :acquired_date,
+      :acquired_by,
+      :portfolio_id
+    ])
     |> validate_required([:name, :slug])
     |> validate_inclusion(:status, @statuses)
     |> unique_constraint(:slug)
