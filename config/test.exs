@@ -42,3 +42,6 @@ config :phoenix_live_view,
 # Sort query params output of verified routes for robust url comparisons
 config :phoenix,
   sort_verified_routes_query_params: true
+
+# Test encryption key for Cloak vault (2FA secrets, etc.)
+config :jutilis, :cloak_key, "n5n1tnMHJFoTrh8F4A0zQ3pJKKLFI1aTHyCd5DmrmeY="
