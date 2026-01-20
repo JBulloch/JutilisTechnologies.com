@@ -2,7 +2,9 @@ defmodule Jutilis.Vault do
   @moduledoc """
   Cloak vault for encrypting sensitive data at rest.
 
-  Uses AES-GCM encryption with keys configured from environment variables.
+  Uses AES-GCM encryption with keys configured from:
+  - Application config `:cloak_key` (for development)
+  - Environment variable `CLOAK_KEY` (for production)
   """
   use Cloak.Vault, otp_app: :jutilis
 
@@ -13,12 +15,20 @@ defmodule Jutilis.Vault do
         default: {
           Cloak.Ciphers.AES.GCM,
           tag: "AES.GCM.V1",
-          key: decode_env!("CLOAK_KEY"),
+          key: get_cloak_key!(),
           iv_length: 12
         }
       )
 
     {:ok, config}
+  end
+
+  defp get_cloak_key! do
+    # First check application config (dev), then environment variable (prod)
+    case Application.get_env(:jutilis, :cloak_key) do
+      nil -> decode_env!("CLOAK_KEY")
+      key -> Base.decode64!(key)
+    end
   end
 
   defp decode_env!(var) do

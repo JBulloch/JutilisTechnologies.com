@@ -19,7 +19,14 @@ defmodule Jutilis.Encrypted do
     def cast(_), do: :error
 
     def dump(value), do: Jutilis.Encrypted.Binary.dump(value)
-    def load(value), do: Jutilis.Encrypted.Binary.load(value)
+
+    def load(value) do
+      case Jutilis.Encrypted.Binary.load(value) do
+        {:ok, _} = result -> result
+        # Decryption failed (wrong key) - return nil to allow login/recovery
+        :error -> {:ok, nil}
+      end
+    end
   end
 
   defmodule Map do
@@ -48,7 +55,8 @@ defmodule Jutilis.Encrypted do
       case Jutilis.Encrypted.Binary.load(value) do
         {:ok, nil} -> {:ok, nil}
         {:ok, json} -> {:ok, Jason.decode!(json)}
-        :error -> :error
+        # Decryption failed (wrong key) - return nil to allow login/recovery
+        :error -> {:ok, nil}
       end
     end
   end

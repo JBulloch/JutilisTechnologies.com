@@ -99,3 +99,7 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# Development encryption key for Cloak vault (2FA secrets, etc.)
+# This key is only for development - production uses CLOAK_KEY env var
+config :jutilis, :cloak_key, "n5n1tnMHJFoTrh8F4A0zQ3pJKKLFI1aTHyCd5DmrmeY="

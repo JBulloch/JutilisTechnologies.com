@@ -277,7 +277,7 @@ defmodule JutilisWeb.PortfolioComponents do
 
         <%= if @venture.featured_pitch_deck do %>
           <a
-            href={~p"/investors/pitch-decks/#{@venture.featured_pitch_deck.slug}"}
+            href={~p"/investors/pitch-decks/#{@venture.featured_pitch_deck.id}"}
             class="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-white transition-colors"
           >
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
