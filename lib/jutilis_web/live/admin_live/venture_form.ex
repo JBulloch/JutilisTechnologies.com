@@ -4,6 +4,7 @@ defmodule JutilisWeb.AdminLive.VentureForm do
   alias Jutilis.Ventures
   alias Jutilis.Ventures.Venture
   alias Jutilis.PitchDecks
+  alias Jutilis.Portfolios
 
   @impl true
   def render(assigns) do
@@ -130,6 +131,30 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                   </option>
                 </select>
               </div>
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Portfolio *</span>
+              </label>
+              <select name={@form[:portfolio_id].name} class="select select-bordered" required>
+                <option value="">Select a portfolio...</option>
+                <%= for portfolio <- @portfolios do %>
+                  <option
+                    value={portfolio.id}
+                    selected={
+                      to_string(@form[:portfolio_id].value) == to_string(portfolio.id)
+                    }
+                  >
+                    {portfolio.name}
+                  </option>
+                <% end %>
+              </select>
+              <label class="label">
+                <span class="label-text-alt text-base-content/60">
+                  The portfolio this venture will appear on
+                </span>
+              </label>
             </div>
 
             <div class="form-control">
@@ -296,24 +321,30 @@ defmodule JutilisWeb.AdminLive.VentureForm do
   end
 
   defp apply_action(socket, :new, _params) do
-    venture = %Venture{}
+    # Pre-select the user's portfolio if they have one
+    user_portfolio = Portfolios.get_portfolio_for_user(socket.assigns.current_scope)
+    venture = %Venture{portfolio_id: user_portfolio && user_portfolio.id}
     pitch_decks = PitchDecks.list_pitch_decks(socket.assigns.current_scope)
+    portfolios = Portfolios.list_portfolios(socket.assigns.current_scope)
 
     socket
     |> assign(:page_title, "New Venture")
     |> assign(:venture, venture)
     |> assign(:pitch_decks, pitch_decks)
+    |> assign(:portfolios, portfolios)
     |> assign(:form, to_form(Ventures.change_venture(socket.assigns.current_scope, venture)))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     venture = Ventures.get_venture!(socket.assigns.current_scope, id)
     pitch_decks = PitchDecks.list_pitch_decks(socket.assigns.current_scope)
+    portfolios = Portfolios.list_portfolios(socket.assigns.current_scope)
 
     socket
     |> assign(:page_title, "Edit #{venture.name}")
     |> assign(:venture, venture)
     |> assign(:pitch_decks, pitch_decks)
+    |> assign(:portfolios, portfolios)
     |> assign(:form, to_form(Ventures.change_venture(socket.assigns.current_scope, venture)))
   end
 

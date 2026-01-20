@@ -2,6 +2,8 @@ defmodule Jutilis.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @two_factor_methods ["totp", "email"]
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
@@ -11,8 +13,24 @@ defmodule Jutilis.Accounts.User do
     field :admin_flag, :boolean, default: false
     field :investor_flag, :boolean, default: false
 
+    # Two-factor authentication
+    field :two_factor_enabled, :boolean, default: false
+    field :two_factor_method, :string  # "totp" or "email"
+
+    # TOTP (authenticator app) - encrypted at rest
+    field :totp_secret_encrypted, Jutilis.Encrypted.Binary, redact: true
+    field :totp_secret, :string, virtual: true, redact: true
+    field :totp_confirmed_at, :utc_datetime
+
+    # Backup codes - encrypted at rest
+    field :backup_codes_encrypted, Jutilis.Encrypted.IntegerList, redact: true
+    field :backup_codes, {:array, :integer}, virtual: true, redact: true
+    field :backup_codes_generated_at, :utc_datetime
+
     timestamps(type: :utc_datetime)
   end
+
+  def two_factor_methods, do: @two_factor_methods
 
   @doc """
   A user changeset for registering or changing the email.
@@ -131,4 +149,112 @@ defmodule Jutilis.Accounts.User do
     Bcrypt.no_user_verify()
     false
   end
+
+  # =============================================================================
+  # Two-Factor Authentication
+  # =============================================================================
+
+  @doc """
+  Changeset for enabling TOTP-based 2FA.
+  Encrypts and stores the TOTP secret.
+  """
+  def enable_totp_changeset(user, secret) when is_binary(secret) do
+    now = DateTime.utc_now(:second)
+
+    user
+    |> change()
+    |> put_change(:totp_secret_encrypted, secret)
+    |> put_change(:totp_confirmed_at, now)
+    |> put_change(:two_factor_enabled, true)
+    |> put_change(:two_factor_method, "totp")
+  end
+
+  @doc """
+  Changeset for enabling email-based 2FA.
+  """
+  def enable_email_2fa_changeset(user) do
+    user
+    |> change()
+    |> put_change(:two_factor_enabled, true)
+    |> put_change(:two_factor_method, "email")
+  end
+
+  @doc """
+  Changeset for disabling 2FA entirely.
+  Clears all 2FA-related fields.
+  """
+  def disable_2fa_changeset(user) do
+    user
+    |> change()
+    |> put_change(:two_factor_enabled, false)
+    |> put_change(:two_factor_method, nil)
+    |> put_change(:totp_secret_encrypted, nil)
+    |> put_change(:totp_confirmed_at, nil)
+    |> put_change(:backup_codes_encrypted, nil)
+    |> put_change(:backup_codes_generated_at, nil)
+  end
+
+  @doc """
+  Changeset for storing encrypted backup codes.
+  """
+  def backup_codes_changeset(user, codes) when is_list(codes) do
+    now = DateTime.utc_now(:second)
+
+    user
+    |> change()
+    |> put_change(:backup_codes_encrypted, codes)
+    |> put_change(:backup_codes_generated_at, now)
+  end
+
+  @doc """
+  Verifies a TOTP code against the user's secret.
+  Returns true if the code is valid.
+  """
+  def valid_totp?(%__MODULE__{totp_secret_encrypted: secret}, code)
+      when is_binary(secret) and is_binary(code) do
+    NimbleTOTP.valid?(secret, code)
+  end
+
+  def valid_totp?(_, _), do: false
+
+  @doc """
+  Checks if a backup code is valid and returns the remaining codes.
+  Returns {:ok, remaining_codes} if valid, :error if invalid.
+  """
+  def use_backup_code(%__MODULE__{backup_codes_encrypted: codes}, code)
+      when is_list(codes) and is_integer(code) do
+    if code in codes do
+      {:ok, List.delete(codes, code)}
+    else
+      :error
+    end
+  end
+
+  def use_backup_code(%__MODULE__{backup_codes_encrypted: codes}, code)
+      when is_list(codes) and is_binary(code) do
+    case Integer.parse(code) do
+      {int_code, ""} -> use_backup_code(%__MODULE__{backup_codes_encrypted: codes}, int_code)
+      _ -> :error
+    end
+  end
+
+  def use_backup_code(_, _), do: :error
+
+  @doc """
+  Returns true if the user has 2FA enabled.
+  """
+  def two_factor_enabled?(%__MODULE__{two_factor_enabled: true}), do: true
+  def two_factor_enabled?(_), do: false
+
+  @doc """
+  Returns true if the user uses TOTP for 2FA.
+  """
+  def uses_totp?(%__MODULE__{two_factor_enabled: true, two_factor_method: "totp"}), do: true
+  def uses_totp?(_), do: false
+
+  @doc """
+  Returns true if the user uses email OTP for 2FA.
+  """
+  def uses_email_otp?(%__MODULE__{two_factor_enabled: true, two_factor_method: "email"}), do: true
+  def uses_email_otp?(_), do: false
 end

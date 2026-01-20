@@ -22,9 +22,14 @@ defmodule JutilisWeb.UserSessionController do
 
     case Accounts.login_user_by_magic_link(token) do
       {:ok, {user, _expired_tokens}} ->
-        conn
-        |> put_flash(:info, info)
-        |> UserAuth.log_in_user(user, user_params)
+        # Check if 2FA is required
+        if Accounts.requires_2fa?(user) do
+          redirect_to_2fa(conn, user, user_params)
+        else
+          conn
+          |> put_flash(:info, info)
+          |> UserAuth.log_in_user(user, user_params)
+        end
 
       {:error, :not_found} ->
         conn
@@ -36,9 +41,14 @@ defmodule JutilisWeb.UserSessionController do
   # email + password login
   def create(conn, %{"user" => %{"email" => email, "password" => password} = user_params}) do
     if user = Accounts.get_user_by_email_and_password(email, password) do
-      conn
-      |> put_flash(:info, "Welcome back!")
-      |> UserAuth.log_in_user(user, user_params)
+      # Check if 2FA is required
+      if Accounts.requires_2fa?(user) do
+        redirect_to_2fa(conn, user, user_params)
+      else
+        conn
+        |> put_flash(:info, "Welcome back!")
+        |> UserAuth.log_in_user(user, user_params)
+      end
     else
       form = Phoenix.Component.to_form(user_params, as: "user")
 
@@ -85,5 +95,38 @@ defmodule JutilisWeb.UserSessionController do
     conn
     |> put_flash(:info, "Logged out successfully.")
     |> UserAuth.log_out_user()
+  end
+
+  @doc """
+  Complete login after successful 2FA verification.
+  Called from the 2FA LiveView after code is verified.
+  """
+  def complete_2fa(conn, _params) do
+    user_id = get_session(conn, :pending_2fa_user_id)
+    return_to = get_session(conn, :pending_2fa_return_to) || ~p"/admin/dashboard"
+
+    if user_id do
+      user = Accounts.get_user!(user_id)
+
+      conn
+      |> delete_session(:pending_2fa_user_id)
+      |> delete_session(:pending_2fa_return_to)
+      |> put_flash(:info, "Welcome back!")
+      |> UserAuth.log_in_user(user, %{"return_to" => return_to})
+    else
+      conn
+      |> put_flash(:error, "Session expired. Please log in again.")
+      |> redirect(to: ~p"/users/log-in")
+    end
+  end
+
+  # Redirect to 2FA verification page
+  defp redirect_to_2fa(conn, user, user_params) do
+    return_to = user_params["return_to"] || ~p"/admin/dashboard"
+
+    conn
+    |> put_session(:pending_2fa_user_id, user.id)
+    |> put_session(:pending_2fa_return_to, return_to)
+    |> redirect(to: ~p"/users/two-factor")
   end
 end

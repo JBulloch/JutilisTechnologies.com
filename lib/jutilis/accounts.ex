@@ -6,7 +6,7 @@ defmodule Jutilis.Accounts do
   import Ecto.Query, warn: false
   alias Jutilis.Repo
 
-  alias Jutilis.Accounts.{User, UserToken, UserNotifier}
+  alias Jutilis.Accounts.{User, UserToken, UserNotifier, UserOtpCode}
 
   ## Database getters
 
@@ -293,5 +293,179 @@ defmodule Jutilis.Accounts do
         {:ok, {user, tokens_to_expire}}
       end
     end)
+  end
+
+  # =============================================================================
+  # Two-Factor Authentication
+  # =============================================================================
+
+  @doc """
+  Generates a new TOTP secret for the user.
+  Returns the raw secret (not yet saved to database).
+  """
+  def generate_totp_secret do
+    NimbleTOTP.secret()
+  end
+
+  @doc """
+  Generates a TOTP URI for QR code display.
+  """
+  def get_totp_uri(user, secret, issuer \\ "Jutilis") do
+    NimbleTOTP.otpauth_uri("#{issuer}:#{user.email}", secret, issuer: issuer)
+  end
+
+  @doc """
+  Generates a QR code SVG for TOTP setup.
+  """
+  def generate_totp_qr_code(user, secret, issuer \\ "Jutilis") do
+    uri = get_totp_uri(user, secret, issuer)
+
+    uri
+    |> EQRCode.encode()
+    |> EQRCode.svg(width: 200)
+  end
+
+  @doc """
+  Verifies a TOTP code and enables 2FA if valid.
+  """
+  def enable_totp_2fa(user, secret, code) do
+    if NimbleTOTP.valid?(secret, code) do
+      user
+      |> User.enable_totp_changeset(secret)
+      |> Repo.update()
+    else
+      {:error, :invalid_code}
+    end
+  end
+
+  @doc """
+  Enables email-based 2FA for the user.
+  """
+  def enable_email_2fa(user) do
+    user
+    |> User.enable_email_2fa_changeset()
+    |> Repo.update()
+  end
+
+  @doc """
+  Disables 2FA for the user.
+  """
+  def disable_2fa(user) do
+    user
+    |> User.disable_2fa_changeset()
+    |> Repo.update()
+  end
+
+  @doc """
+  Generates backup codes for the user.
+  Returns the plain-text codes (only shown once).
+  """
+  def generate_backup_codes(user, count \\ 10) do
+    codes = Enum.map(1..count, fn _ ->
+      :crypto.strong_rand_bytes(4)
+      |> :binary.decode_unsigned()
+      |> rem(100_000_000)
+    end)
+
+    case Repo.update(User.backup_codes_changeset(user, codes)) do
+      {:ok, _user} -> {:ok, codes}
+      error -> error
+    end
+  end
+
+  @doc """
+  Verifies a TOTP code for an existing 2FA user.
+  """
+  def verify_totp_code(user, code) do
+    if User.valid_totp?(user, code) do
+      :ok
+    else
+      :error
+    end
+  end
+
+  @doc """
+  Verifies a backup code and removes it from the user's available codes.
+  """
+  def verify_backup_code(user, code) do
+    case User.use_backup_code(user, code) do
+      {:ok, remaining_codes} ->
+        case Repo.update(User.backup_codes_changeset(user, remaining_codes)) do
+          {:ok, _user} -> :ok
+          _ -> :error
+        end
+
+      :error ->
+        :error
+    end
+  end
+
+  # =============================================================================
+  # Email OTP
+  # =============================================================================
+
+  @doc """
+  Generates and sends an email OTP code to the user.
+  Returns {:ok, code} on success (code is for testing purposes in dev).
+  """
+  def send_email_otp(user, context \\ "login") do
+    # Delete any existing codes for this user/context
+    Repo.delete_all(UserOtpCode.user_codes_query(user, context))
+
+    # Generate new code
+    {code, changeset} = UserOtpCode.build_otp_token(user, context)
+
+    case Repo.insert(changeset) do
+      {:ok, _otp} ->
+        # Send the code via email
+        UserNotifier.deliver_otp_code(user, code)
+        {:ok, code}
+
+      error ->
+        error
+    end
+  end
+
+  @doc """
+  Verifies an email OTP code.
+  """
+  def verify_email_otp(user, code, context \\ "login") do
+    query = UserOtpCode.verify_code_query(user, code, context)
+
+    case Repo.one(query) do
+      nil ->
+        :error
+
+      otp ->
+        # Mark the code as used
+        Repo.update!(UserOtpCode.mark_used_changeset(otp))
+        :ok
+    end
+  end
+
+  @doc """
+  Cleans up expired OTP codes.
+  Should be called periodically (e.g., via a scheduled job).
+  """
+  def cleanup_expired_otp_codes do
+    Repo.delete_all(UserOtpCode.expired_codes_query())
+  end
+
+  @doc """
+  Checks if a user requires 2FA verification.
+  """
+  def requires_2fa?(user) do
+    User.two_factor_enabled?(user)
+  end
+
+  @doc """
+  Gets the 2FA method for a user.
+  """
+  def get_2fa_method(user) do
+    cond do
+      User.uses_totp?(user) -> :totp
+      User.uses_email_otp?(user) -> :email
+      true -> nil
+    end
   end
 end

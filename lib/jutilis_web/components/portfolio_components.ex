@@ -202,9 +202,9 @@ defmodule JutilisWeb.PortfolioComponents do
     <div class="group relative overflow-hidden rounded-2xl bg-gray-900 p-8 hover:shadow-2xl transition-all duration-300">
       <div class="flex items-start justify-between mb-6">
         <div class="flex items-center gap-4">
-          <div class={"flex h-16 w-16 items-center justify-center rounded-xl bg-#{@venture.color || "primary"}-500 shadow-lg flex-shrink-0"}>
+          <div class={"flex h-16 w-16 items-center justify-center rounded-xl bg-#{@venture.color || "primary"}-500 shadow-lg flex-shrink-0 overflow-hidden"}>
             <%= if @venture.icon_svg do %>
-              <div class="h-9 w-9 text-white">
+              <div class="h-9 w-9 text-white flex items-center justify-center [&>svg]:h-full [&>svg]:w-full">
                 {Phoenix.HTML.raw(@venture.icon_svg)}
               </div>
             <% else %>
@@ -303,8 +303,8 @@ defmodule JutilisWeb.PortfolioComponents do
     <div class="rounded-2xl bg-base-100 border-2 border-base-300 p-6 hover:shadow-lg transition-all">
       <div class="flex items-center gap-4 mb-4">
         <%= if @venture.icon_svg do %>
-          <div class={"flex h-12 w-12 items-center justify-center rounded-xl bg-#{@venture.color || "gray"}-500/20 flex-shrink-0"}>
-            <div class={"h-6 w-6 text-#{@venture.color || "gray"}-500"}>
+          <div class={"flex h-12 w-12 items-center justify-center rounded-xl bg-#{@venture.color || "gray"}-500/20 flex-shrink-0 overflow-hidden"}>
+            <div class={"h-6 w-6 text-#{@venture.color || "gray"}-500 flex items-center justify-center [&>svg]:h-full [&>svg]:w-full"}>
               {Phoenix.HTML.raw(@venture.icon_svg)}
             </div>
           </div>

@@ -81,4 +81,26 @@ defmodule Jutilis.Accounts.UserNotifier do
     ==============================
     """)
   end
+
+  @doc """
+  Deliver a one-time password code for 2FA.
+  """
+  def deliver_otp_code(user, code) do
+    deliver(user.email, "Your verification code", """
+
+    ==============================
+
+    Hi #{user.email},
+
+    Your verification code is:
+
+    #{code}
+
+    This code will expire in 10 minutes.
+
+    If you didn't request this code, please secure your account immediately.
+
+    ==============================
+    """)
+  end
 end

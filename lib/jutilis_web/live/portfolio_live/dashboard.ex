@@ -168,9 +168,11 @@ defmodule JutilisWeb.PortfolioLive.Dashboard do
                 <%= for venture <- Enum.take(@ventures, 6) do %>
                   <div class="rounded-xl border-2 border-base-300 bg-base-100 p-4 hover:border-primary transition-all">
                     <div class="flex items-center gap-3">
-                      <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20">
+                      <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 overflow-hidden">
                         <%= if venture.icon_svg do %>
-                          {Phoenix.HTML.raw(venture.icon_svg)}
+                          <div class="h-5 w-5 text-primary flex items-center justify-center [&>svg]:h-full [&>svg]:w-full">
+                            {Phoenix.HTML.raw(venture.icon_svg)}
+                          </div>
                         <% else %>
                           <svg
                             class="h-5 w-5 text-primary"

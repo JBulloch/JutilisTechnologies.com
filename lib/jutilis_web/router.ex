@@ -97,6 +97,20 @@ defmodule JutilisWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
+
+    live_session :user_settings_2fa,
+      on_mount: [{JutilisWeb.UserAuth, :ensure_authenticated}] do
+      live "/users/settings/two-factor", UserSettingsTwoFactorLive, :index
+    end
+  end
+
+  # 2FA verification (after login, before full authentication)
+  scope "/", JutilisWeb do
+    pipe_through [:browser]
+
+    live_session :two_factor_verification do
+      live "/users/two-factor", UserTwoFactorLive, :verify
+    end
   end
 
   ## User portfolio management routes (for regular users to manage their own portfolio)
@@ -122,6 +136,7 @@ defmodule JutilisWeb.Router do
     get "/users/log-in", UserSessionController, :new
     get "/users/log-in/:token", UserSessionController, :confirm
     post "/users/log-in", UserSessionController, :create
+    get "/users/two-factor/complete", UserSessionController, :complete_2fa
     delete "/users/log-out", UserSessionController, :delete
   end
 

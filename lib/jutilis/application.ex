@@ -12,8 +12,8 @@ defmodule Jutilis.Application do
       Jutilis.Repo,
       {DNSCluster, query: Application.get_env(:jutilis, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Jutilis.PubSub},
-      # Start a worker by calling: Jutilis.Worker.start_link(arg)
-      # {Jutilis.Worker, arg},
+      # Encryption vault for sensitive data
+      Jutilis.Vault,
       # Start to serve requests, typically the last entry
       JutilisWeb.Endpoint
     ]

@@ -66,9 +66,11 @@ defmodule JutilisWeb.PortfolioLive.VentureIndex do
                 >
                   <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center gap-3">
-                      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary overflow-hidden">
                         <%= if venture.icon_svg do %>
-                          {Phoenix.HTML.raw(venture.icon_svg)}
+                          <div class="h-6 w-6 flex items-center justify-center [&>svg]:h-full [&>svg]:w-full">
+                            {Phoenix.HTML.raw(venture.icon_svg)}
+                          </div>
                         <% else %>
                           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
