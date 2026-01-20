@@ -25,6 +25,7 @@ defmodule Jutilis.Release do
         Ecto.Migrator.with_repo(repo, fn _repo ->
           seed_admin()
           seed_ventures()
+          seed_launchpad()
         end)
     end
   end
@@ -109,6 +110,14 @@ defmodule Jutilis.Release do
         IO.puts("Venture #{venture_attrs.name} already exists")
       end
     end
+  end
+
+  defp seed_launchpad do
+    alias Jutilis.Launchpad
+
+    IO.puts("Seeding Launchpad categories and tools...")
+    Launchpad.seed_defaults!()
+    IO.puts("Launchpad seeding complete")
   end
 
   defp repos do
