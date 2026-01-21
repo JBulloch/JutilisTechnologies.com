@@ -32,6 +32,57 @@ defmodule JutilisWeb.PitchDeckLive.Show do
         </:actions>
       </.header>
 
+      <%= if @pitch_deck.status in ["published", "private"] do %>
+        <div class="mt-4 p-4 bg-base-200 rounded-xl">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-base-content mb-1">
+                <%= if @pitch_deck.status == "private" do %>
+                  <span class="inline-flex items-center gap-1">
+                    <svg class="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    Private Share Link
+                  </span>
+                <% else %>
+                  Public Link
+                <% end %>
+              </p>
+              <code class="text-xs text-base-content/70 break-all block bg-base-300 rounded px-2 py-1">
+                {@share_url}
+              </code>
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <button
+                type="button"
+                phx-click="copy_share_link"
+                class="btn btn-sm btn-outline"
+              >
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Copy
+              </button>
+              <a
+                href={@share_url}
+                target="_blank"
+                class="btn btn-sm btn-primary"
+              >
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Open
+              </a>
+            </div>
+          </div>
+          <%= if @pitch_deck.status == "private" do %>
+            <p class="text-xs text-base-content/50 mt-2">
+              This link can be shared directly. The pitch deck won't appear in public listings.
+            </p>
+          <% end %>
+        </div>
+      <% end %>
+
       <.list>
         <:item title="Description">{@pitch_deck.description || "No description"}</:item>
         <:item title="External URL">
@@ -89,13 +140,18 @@ defmodule JutilisWeb.PitchDeckLive.Show do
 
   defp status_badge_class("draft"), do: "badge-warning"
   defp status_badge_class("published"), do: "badge-success"
+  defp status_badge_class("private"), do: "badge-info"
   defp status_badge_class("archived"), do: "badge-ghost"
   defp status_badge_class(_), do: ""
 
-  defp venture_label("cards-co-op"), do: "Cards Co-op"
-  defp venture_label("go-derby"), do: "Go Derby"
-  defp venture_label("other"), do: "Other"
-  defp venture_label(v), do: v
+  defp venture_label(nil), do: "General"
+
+  defp venture_label(slug) do
+    slug
+    |> String.split("-")
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
+  end
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -103,10 +159,14 @@ defmodule JutilisWeb.PitchDeckLive.Show do
       PitchDecks.subscribe_pitch_decks(socket.assigns.current_scope)
     end
 
+    pitch_deck = PitchDecks.get_pitch_deck!(socket.assigns.current_scope, id)
+    share_url = url(~p"/investors/pitch-decks/#{pitch_deck}")
+
     {:ok,
      socket
      |> assign(:page_title, "Show Pitch deck")
-     |> assign(:pitch_deck, PitchDecks.get_pitch_deck!(socket.assigns.current_scope, id))}
+     |> assign(:pitch_deck, pitch_deck)
+     |> assign(:share_url, share_url)}
   end
 
   @impl true
@@ -130,5 +190,13 @@ defmodule JutilisWeb.PitchDeckLive.Show do
   def handle_info({type, %Jutilis.PitchDecks.PitchDeck{}}, socket)
       when type in [:created, :updated, :deleted] do
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("copy_share_link", _params, socket) do
+    {:noreply,
+     socket
+     |> push_event("copy_to_clipboard", %{text: socket.assigns.share_url})
+     |> put_flash(:info, "Link copied to clipboard")}
   end
 end
