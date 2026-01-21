@@ -65,8 +65,7 @@ portfolio =
           secondary_color: "amber",
           hero_title: "Jutilis",
           hero_subtitle: "Technologies",
-          hero_description:
-            "Building multi-tenant SaaS platforms for promising market ventures.",
+          hero_description: "Building multi-tenant SaaS platforms for promising market ventures.",
           hero_badge_text: "SaaS Incubator",
           section_config: %{
             "about" => true,

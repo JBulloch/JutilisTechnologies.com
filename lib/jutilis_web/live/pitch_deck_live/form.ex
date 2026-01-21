@@ -156,8 +156,8 @@ defmodule JutilisWeb.PitchDeckLive.Form do
   defp return_to("show"), do: "show"
   defp return_to(_), do: "index"
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    pitch_deck = PitchDecks.get_pitch_deck!(socket.assigns.current_scope, id)
+  defp apply_action(socket, :edit, %{"slug" => slug}) do
+    pitch_deck = PitchDecks.get_pitch_deck!(socket.assigns.current_scope, slug)
 
     socket
     |> assign(:page_title, "Edit Pitch deck")

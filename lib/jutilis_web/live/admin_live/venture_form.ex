@@ -142,9 +142,7 @@ defmodule JutilisWeb.AdminLive.VentureForm do
                 <%= for portfolio <- @portfolios do %>
                   <option
                     value={portfolio.id}
-                    selected={
-                      to_string(@form[:portfolio_id].value) == to_string(portfolio.id)
-                    }
+                    selected={to_string(@form[:portfolio_id].value) == to_string(portfolio.id)}
                   >
                     {portfolio.name}
                   </option>

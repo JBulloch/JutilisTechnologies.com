@@ -29,7 +29,10 @@ defmodule JutilisWeb.PitchDeckLiveTest do
     test "deletes pitch_deck in listing", %{conn: conn, pitch_deck: pitch_deck} do
       {:ok, index_live, _html} = live(conn, ~p"/admin/pitch-decks")
 
-      assert index_live |> element("#pitch_decks-#{pitch_deck.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#pitch_decks-#{pitch_deck.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#pitch_decks-#{pitch_deck.id}")
     end
   end

@@ -10,9 +10,17 @@ defmodule JutilisWeb.PortfolioLive.PitchDeckIndex do
       <div class="mx-auto max-w-7xl px-6 py-8 lg:px-8">
         <div class="flex items-center justify-between mb-8">
           <div>
-            <.link navigate={~p"/portfolio"} class="text-sm text-base-content/60 hover:text-primary mb-2 inline-flex items-center gap-1">
+            <.link
+              navigate={~p"/portfolio"}
+              class="text-sm text-base-content/60 hover:text-primary mb-2 inline-flex items-center gap-1"
+            >
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               Back to Dashboard
             </.link>
@@ -70,7 +78,9 @@ defmodule JutilisWeb.PortfolioLive.PitchDeckIndex do
               />
             </svg>
             <h3 class="text-xl font-bold text-base-content mb-2">Create Your Portfolio First</h3>
-            <p class="text-base-content/60 mb-6">You need to create a portfolio before adding pitch decks</p>
+            <p class="text-base-content/60 mb-6">
+              You need to create a portfolio before adding pitch decks
+            </p>
             <.link navigate={~p"/portfolio/settings"} class="btn btn-primary">
               Create Portfolio
             </.link>

@@ -11,17 +11,27 @@ defmodule JutilisWeb.PortfolioLive.VentureForm do
     <div class="min-h-screen bg-base-100">
       <div class="mx-auto max-w-4xl px-6 py-8 lg:px-8">
         <div class="mb-8">
-          <.link navigate={~p"/portfolio/ventures"} class="text-sm text-base-content/60 hover:text-primary mb-2 inline-flex items-center gap-1">
+          <.link
+            navigate={~p"/portfolio/ventures"}
+            class="text-sm text-base-content/60 hover:text-primary mb-2 inline-flex items-center gap-1"
+          >
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Ventures
           </.link>
           <h1 class="text-3xl font-black text-base-content">
-            <%= if @live_action == :new, do: "New Venture", else: "Edit Venture" %>
+            {if @live_action == :new, do: "New Venture", else: "Edit Venture"}
           </h1>
           <p class="text-base-content/70 mt-1">
-            <%= if @live_action == :new, do: "Add a new venture to your portfolio", else: "Update venture details" %>
+            {if @live_action == :new,
+              do: "Add a new venture to your portfolio",
+              else: "Update venture details"}
           </p>
         </div>
 
@@ -65,8 +75,8 @@ defmodule JutilisWeb.PortfolioLive.VentureForm do
               />
             </div>
           </div>
-
-          <!-- Status -->
+          
+    <!-- Status -->
           <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
             <h2 class="text-xl font-bold text-base-content mb-6">Status</h2>
             <div class="space-y-4">
@@ -89,8 +99,8 @@ defmodule JutilisWeb.PortfolioLive.VentureForm do
               />
             </div>
           </div>
-
-          <!-- Branding -->
+          
+    <!-- Branding -->
           <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
             <h2 class="text-xl font-bold text-base-content mb-6">Branding</h2>
             <div class="space-y-4">
@@ -121,8 +131,8 @@ defmodule JutilisWeb.PortfolioLive.VentureForm do
               </p>
             </div>
           </div>
-
-          <!-- Acquired Info (conditional) -->
+          
+    <!-- Acquired Info (conditional) -->
           <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
             <h2 class="text-xl font-bold text-base-content mb-6">Acquisition Details</h2>
             <p class="text-sm text-base-content/60 mb-4">
@@ -142,14 +152,14 @@ defmodule JutilisWeb.PortfolioLive.VentureForm do
               />
             </div>
           </div>
-
-          <!-- Actions -->
+          
+    <!-- Actions -->
           <div class="flex items-center justify-between pt-4">
             <.link navigate={~p"/portfolio/ventures"} class="btn btn-ghost">
               Cancel
             </.link>
             <button type="submit" class="btn btn-primary" phx-disable-with="Saving...">
-              <%= if @live_action == :new, do: "Create Venture", else: "Save Changes" %>
+              {if @live_action == :new, do: "Create Venture", else: "Save Changes"}
             </button>
           </div>
         </.form>

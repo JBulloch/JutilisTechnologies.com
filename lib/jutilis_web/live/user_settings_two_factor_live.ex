@@ -11,9 +11,17 @@ defmodule JutilisWeb.UserSettingsTwoFactorLive do
     <div class="min-h-screen bg-base-100">
       <div class="mx-auto max-w-3xl px-6 py-8 lg:px-8">
         <div class="mb-8">
-          <.link navigate={~p"/users/settings"} class="text-sm text-base-content/60 hover:text-primary flex items-center gap-1 mb-4">
+          <.link
+            navigate={~p"/users/settings"}
+            class="text-sm text-base-content/60 hover:text-primary flex items-center gap-1 mb-4"
+          >
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Settings
           </.link>
@@ -29,19 +37,24 @@ defmodule JutilisWeb.UserSettingsTwoFactorLive do
             <div class="flex items-center gap-4">
               <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-success/20 text-success">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
                 </svg>
               </div>
               <div>
                 <h3 class="font-bold text-success">2FA is enabled</h3>
                 <p class="text-sm text-base-content/60">
-                  Using: <%= if @method == :totp, do: "Authenticator app", else: "Email codes" %>
+                  Using: {if @method == :totp, do: "Authenticator app", else: "Email codes"}
                 </p>
               </div>
             </div>
           </div>
-
-          <!-- Backup Codes Section -->
+          
+    <!-- Backup Codes Section -->
           <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6 mb-6">
             <h2 class="text-lg font-bold text-base-content mb-4">Backup Codes</h2>
             <p class="text-base-content/60 mb-4">
@@ -70,8 +83,8 @@ defmodule JutilisWeb.UserSettingsTwoFactorLive do
               </button>
             <% end %>
           </div>
-
-          <!-- Disable 2FA -->
+          
+    <!-- Disable 2FA -->
           <div class="rounded-2xl border-2 border-error/30 bg-base-100 p-6">
             <h2 class="text-lg font-bold text-base-content mb-2">Disable 2FA</h2>
             <p class="text-base-content/60 mb-4">
@@ -93,7 +106,12 @@ defmodule JutilisWeb.UserSettingsTwoFactorLive do
               <div class="flex items-start gap-4">
                 <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary flex-shrink-0">
                   <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <div class="flex-1">
@@ -104,14 +122,21 @@ defmodule JutilisWeb.UserSettingsTwoFactorLive do
                   </p>
                   <%= if @setup_mode == :totp do %>
                     <div class="bg-base-200 rounded-xl p-4 mb-4">
-                      <p class="text-sm font-semibold mb-3">1. Scan this QR code with your authenticator app:</p>
+                      <p class="text-sm font-semibold mb-3">
+                        1. Scan this QR code with your authenticator app:
+                      </p>
                       <div class="flex justify-center mb-4 bg-white p-4 rounded-lg w-fit mx-auto">
                         {Phoenix.HTML.raw(@qr_code)}
                       </div>
                       <p class="text-xs text-base-content/60 text-center mb-4">
-                        Or enter this key manually: <code class="bg-base-300 px-2 py-1 rounded">{Base.encode32(@totp_secret, padding: false)}</code>
+                        Or enter this key manually:
+                        <code class="bg-base-300 px-2 py-1 rounded">
+                          {Base.encode32(@totp_secret, padding: false)}
+                        </code>
                       </p>
-                      <p class="text-sm font-semibold mb-2">2. Enter the 6-digit code from your app:</p>
+                      <p class="text-sm font-semibold mb-2">
+                        2. Enter the 6-digit code from your app:
+                      </p>
                       <.form for={@form} phx-submit="verify_totp" class="flex gap-2">
                         <input
                           type="text"
@@ -136,13 +161,18 @@ defmodule JutilisWeb.UserSettingsTwoFactorLive do
                 </div>
               </div>
             </div>
-
-            <!-- Email OTP Option -->
+            
+    <!-- Email OTP Option -->
             <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-6">
               <div class="flex items-start gap-4">
                 <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary flex-shrink-0">
                   <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <div class="flex-1">

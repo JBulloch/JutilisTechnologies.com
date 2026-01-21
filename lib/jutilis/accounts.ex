@@ -361,11 +361,12 @@ defmodule Jutilis.Accounts do
   Returns the plain-text codes (only shown once).
   """
   def generate_backup_codes(user, count \\ 10) do
-    codes = Enum.map(1..count, fn _ ->
-      :crypto.strong_rand_bytes(4)
-      |> :binary.decode_unsigned()
-      |> rem(100_000_000)
-    end)
+    codes =
+      Enum.map(1..count, fn _ ->
+        :crypto.strong_rand_bytes(4)
+        |> :binary.decode_unsigned()
+        |> rem(100_000_000)
+      end)
 
     case Repo.update(User.backup_codes_changeset(user, codes)) do
       {:ok, _user} -> {:ok, codes}

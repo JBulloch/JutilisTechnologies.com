@@ -58,7 +58,7 @@ defmodule JutilisWeb.PitchDeckLive.Index do
         </:action>
         <:action :let={{id, pitch_deck}}>
           <.link
-            phx-click={JS.push("delete", value: %{id: pitch_deck.id}) |> hide("##{id}")}
+            phx-click={JS.push("delete", value: %{slug: pitch_deck.slug}) |> hide("##{id}")}
             data-confirm="Are you sure you want to delete this pitch deck?"
           >
             Delete
@@ -71,13 +71,18 @@ defmodule JutilisWeb.PitchDeckLive.Index do
 
   defp status_badge_class("draft"), do: "badge-warning"
   defp status_badge_class("published"), do: "badge-success"
+  defp status_badge_class("private"), do: "badge-info"
   defp status_badge_class("archived"), do: "badge-ghost"
   defp status_badge_class(_), do: ""
 
-  defp venture_label("cards-co-op"), do: "Cards Co-op"
-  defp venture_label("go-derby"), do: "Go Derby"
-  defp venture_label("other"), do: "Other"
-  defp venture_label(v), do: v
+  defp venture_label(nil), do: "—"
+
+  defp venture_label(slug) do
+    slug
+    |> String.split("-")
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
+  end
 
   @impl true
   def mount(_params, _session, socket) do
@@ -92,8 +97,8 @@ defmodule JutilisWeb.PitchDeckLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    pitch_deck = PitchDecks.get_pitch_deck!(socket.assigns.current_scope, id)
+  def handle_event("delete", %{"slug" => slug}, socket) do
+    pitch_deck = PitchDecks.get_pitch_deck!(socket.assigns.current_scope, slug)
     {:ok, _} = PitchDecks.delete_pitch_deck(socket.assigns.current_scope, pitch_deck)
 
     {:noreply, stream_delete(socket, :pitch_decks, pitch_deck)}

@@ -42,6 +42,7 @@ defmodule Jutilis.Accounts.UserOtpCode do
   def build_otp_token(user, context) when context in ["login", "setup"] do
     code = generate_code()
     hashed = hash_code(code)
+
     expires_at =
       DateTime.utc_now()
       |> DateTime.add(@code_validity_minutes, :minute)

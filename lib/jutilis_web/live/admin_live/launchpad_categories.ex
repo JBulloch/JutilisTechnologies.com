@@ -26,14 +26,19 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
             </a>
             <a href={~p"/admin/launchpad/categories/new"} class="btn btn-primary btn-sm">
               <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
               Add Category
             </a>
           </div>
         </div>
-
-        <!-- Categories by Phase -->
+        
+    <!-- Categories by Phase -->
         <%= for phase <- ["planning", "building", "maintaining"] do %>
           <div class="mb-8">
             <h2 class="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
@@ -57,7 +62,10 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <a href={~p"/admin/launchpad/categories/#{category.id}/edit"} class="btn btn-ghost btn-sm">
+                    <a
+                      href={~p"/admin/launchpad/categories/#{category.id}/edit"}
+                      class="btn btn-ghost btn-sm"
+                    >
                       Edit
                     </a>
                     <button
@@ -118,9 +126,15 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
             <div class="form-control">
               <label class="label"><span class="label-text font-semibold">Phase</span></label>
               <select name={@form[:phase].name} class="select select-bordered" required>
-                <option value="planning" selected={@form[:phase].value == "planning"}>Planning</option>
-                <option value="building" selected={@form[:phase].value == "building"}>Building</option>
-                <option value="maintaining" selected={@form[:phase].value == "maintaining"}>Maintaining</option>
+                <option value="planning" selected={@form[:phase].value == "planning"}>
+                  Planning
+                </option>
+                <option value="building" selected={@form[:phase].value == "building"}>
+                  Building
+                </option>
+                <option value="maintaining" selected={@form[:phase].value == "maintaining"}>
+                  Maintaining
+                </option>
               </select>
             </div>
 
@@ -135,7 +149,9 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
             </div>
 
             <div class="form-control">
-              <label class="label"><span class="label-text font-semibold">Icon (optional)</span></label>
+              <label class="label">
+                <span class="label-text font-semibold">Icon (optional)</span>
+              </label>
               <input
                 type="text"
                 name={@form[:icon].name}
@@ -147,7 +163,9 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
 
             <div class="grid grid-cols-2 gap-4">
               <div class="form-control">
-                <label class="label"><span class="label-text font-semibold">Display Order</span></label>
+                <label class="label">
+                  <span class="label-text font-semibold">Display Order</span>
+                </label>
                 <input
                   type="number"
                   name={@form[:display_order].name}
@@ -230,7 +248,11 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
   @impl true
   def handle_event("validate", %{"category" => category_params}, socket) do
     changeset =
-      Launchpad.change_category(socket.assigns.current_scope, socket.assigns.category, category_params)
+      Launchpad.change_category(
+        socket.assigns.current_scope,
+        socket.assigns.category,
+        category_params
+      )
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :form, to_form(changeset))}
@@ -270,7 +292,11 @@ defmodule JutilisWeb.AdminLive.LaunchpadCategories do
   end
 
   defp save_category(socket, :edit, category_params) do
-    case Launchpad.update_category(socket.assigns.current_scope, socket.assigns.category, category_params) do
+    case Launchpad.update_category(
+           socket.assigns.current_scope,
+           socket.assigns.category,
+           category_params
+         ) do
       {:ok, _category} ->
         {:noreply,
          socket

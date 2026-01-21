@@ -57,13 +57,18 @@ defmodule JutilisWeb.PortfolioLive.Dashboard do
               </div>
             </div>
           </div>
-
-          <!-- Metrics Cards -->
+          
+    <!-- Metrics Cards -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <.metric_card value={@venture_count} label="Ventures" color="primary">
               <:icon>
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
                 </svg>
               </:icon>
             </.metric_card>
@@ -71,7 +76,12 @@ defmodule JutilisWeb.PortfolioLive.Dashboard do
             <.metric_card value={@pitch_deck_count} label="Pitch Decks" color="success">
               <:icon>
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
                 </svg>
               </:icon>
             </.metric_card>
@@ -84,13 +94,18 @@ defmodule JutilisWeb.PortfolioLive.Dashboard do
             >
               <:icon>
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </:icon>
             </.metric_card>
           </div>
-
-          <!-- Quick Actions -->
+          
+    <!-- Quick Actions -->
           <div class="mb-12">
             <h2 class="text-xl font-bold text-base-content mb-4">Quick Actions</h2>
             <div class="flex flex-wrap gap-4">
@@ -130,8 +145,8 @@ defmodule JutilisWeb.PortfolioLive.Dashboard do
               <% end %>
             </div>
           </div>
-
-          <!-- Recent Ventures -->
+          
+    <!-- Recent Ventures -->
           <div>
             <div class="flex items-center justify-between mb-4">
               <h2 class="text-xl font-bold text-base-content">Your Ventures</h2>

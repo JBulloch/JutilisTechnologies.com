@@ -65,7 +65,7 @@
         </div>
       </div>
       <a href={~p"/users/settings/two-factor"} class="btn btn-outline btn-sm">
-        <%= if @current_scope.user.two_factor_enabled, do: "Manage", else: "Enable" %>
+        {if @current_scope.user.two_factor_enabled, do: "Manage", else: "Enable"}
       </a>
     </div>
   </div>

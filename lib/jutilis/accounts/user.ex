@@ -15,7 +15,8 @@ defmodule Jutilis.Accounts.User do
 
     # Two-factor authentication
     field :two_factor_enabled, :boolean, default: false
-    field :two_factor_method, :string  # "totp" or "email"
+    # "totp" or "email"
+    field :two_factor_method, :string
 
     # TOTP (authenticator app) - encrypted at rest
     field :totp_secret_encrypted, Jutilis.Encrypted.Binary, redact: true

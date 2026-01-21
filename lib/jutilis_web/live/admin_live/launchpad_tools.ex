@@ -26,14 +26,19 @@ defmodule JutilisWeb.AdminLive.LaunchpadTools do
             </a>
             <a href={~p"/admin/launchpad/tools/new"} class="btn btn-primary btn-sm">
               <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
               Add Tool
             </a>
           </div>
         </div>
-
-        <!-- Tools List -->
+        
+    <!-- Tools List -->
         <div class="grid gap-4">
           <%= for tool <- @tools do %>
             <div class="rounded-2xl border-2 border-base-300 bg-base-100 p-4 flex items-center justify-between hover:border-primary/30 transition-colors">
@@ -45,7 +50,12 @@ defmodule JutilisWeb.AdminLive.LaunchpadTools do
                     </svg>
                   <% else %>
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
                     </svg>
                   <% end %>
                 </div>
@@ -191,7 +201,9 @@ defmodule JutilisWeb.AdminLive.LaunchpadTools do
 
             <div class="grid grid-cols-3 gap-4">
               <div class="form-control">
-                <label class="label"><span class="label-text font-semibold">Display Order</span></label>
+                <label class="label">
+                  <span class="label-text font-semibold">Display Order</span>
+                </label>
                 <input
                   type="number"
                   name={@form[:display_order].name}

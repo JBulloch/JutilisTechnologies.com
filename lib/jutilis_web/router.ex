@@ -56,7 +56,7 @@ defmodule JutilisWeb.Router do
     live_session :public_investor,
       on_mount: [{JutilisWeb.UserAuth, :mount_current_scope}] do
       live "/pitch-decks", InvestorLive.PitchDeckIndex, :index
-      live "/pitch-decks/:id", InvestorLive.PitchDeckShow, :show
+      live "/pitch-decks/:slug", InvestorLive.PitchDeckShow, :show
     end
   end
 
@@ -126,7 +126,7 @@ defmodule JutilisWeb.Router do
       live "/ventures/:id/edit", PortfolioLive.VentureForm, :edit
       live "/pitch-decks", PortfolioLive.PitchDeckIndex, :index
       live "/pitch-decks/new", PortfolioLive.PitchDeckForm, :new
-      live "/pitch-decks/:id/edit", PortfolioLive.PitchDeckForm, :edit
+      live "/pitch-decks/:slug/edit", PortfolioLive.PitchDeckForm, :edit
     end
   end
 
@@ -150,8 +150,8 @@ defmodule JutilisWeb.Router do
       live "/dashboard", AdminLive.Dashboard, :index
       live "/pitch-decks", PitchDeckLive.Index, :index
       live "/pitch-decks/new", PitchDeckLive.Form, :new
-      live "/pitch-decks/:id", PitchDeckLive.Show, :show
-      live "/pitch-decks/:id/edit", PitchDeckLive.Form, :edit
+      live "/pitch-decks/:slug", PitchDeckLive.Show, :show
+      live "/pitch-decks/:slug/edit", PitchDeckLive.Form, :edit
       live "/ventures", AdminLive.VentureIndex, :index
       live "/ventures/new", AdminLive.VentureForm, :new
       live "/ventures/:id", AdminLive.VentureShow, :show

@@ -14,9 +14,7 @@ defmodule Jutilis.Vault do
       Keyword.put(config, :ciphers,
         default: {
           Cloak.Ciphers.AES.GCM,
-          tag: "AES.GCM.V1",
-          key: get_cloak_key!(),
-          iv_length: 12
+          tag: "AES.GCM.V1", key: get_cloak_key!(), iv_length: 12
         }
       )
 

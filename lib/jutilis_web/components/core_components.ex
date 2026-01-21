@@ -468,7 +468,7 @@ defmodule JutilisWeb.CoreComponents do
     )
   end
 
-@doc """
+  @doc """
   Renders a metric card for dashboards.
 
   ## Examples
@@ -483,7 +483,11 @@ defmodule JutilisWeb.CoreComponents do
   """
   attr :value, :any, required: true, doc: "the metric value to display"
   attr :label, :string, required: true, doc: "the label below the value"
-  attr :color, :string, default: "primary", doc: "color theme: primary, success, warning, secondary, error"
+
+  attr :color, :string,
+    default: "primary",
+    doc: "color theme: primary, success, warning, secondary, error"
+
   attr :value_class, :string, default: nil, doc: "optional override for value text classes"
 
   slot :icon, required: true, doc: "the icon to display"

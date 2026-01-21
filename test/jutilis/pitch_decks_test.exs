@@ -24,10 +24,10 @@ defmodule Jutilis.PitchDecksTest do
       assert Enum.any?(pitch_decks, fn pd -> pd.id == pitch_deck.id end)
     end
 
-    test "get_pitch_deck!/2 returns the pitch_deck with given id" do
+    test "get_pitch_deck!/2 returns the pitch_deck with given slug" do
       pitch_deck = pitch_deck_fixture()
       scope = admin_scope()
-      assert PitchDecks.get_pitch_deck!(scope, pitch_deck.id).id == pitch_deck.id
+      assert PitchDecks.get_pitch_deck!(scope, pitch_deck.slug).id == pitch_deck.id
     end
 
     test "create_pitch_deck/2 with valid data creates a pitch_deck" do
@@ -79,7 +79,7 @@ defmodule Jutilis.PitchDecksTest do
       assert {:error, %Ecto.Changeset{}} =
                PitchDecks.update_pitch_deck(scope, pitch_deck, @invalid_attrs)
 
-      fetched = PitchDecks.get_pitch_deck!(scope, pitch_deck.id)
+      fetched = PitchDecks.get_pitch_deck!(scope, pitch_deck.slug)
       assert fetched.id == pitch_deck.id
     end
 
@@ -87,7 +87,10 @@ defmodule Jutilis.PitchDecksTest do
       pitch_deck = pitch_deck_fixture()
       scope = admin_scope()
       assert {:ok, %PitchDeck{}} = PitchDecks.delete_pitch_deck(scope, pitch_deck)
-      assert_raise Ecto.NoResultsError, fn -> PitchDecks.get_pitch_deck!(scope, pitch_deck.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        PitchDecks.get_pitch_deck!(scope, pitch_deck.slug)
+      end
     end
 
     test "change_pitch_deck/2 returns a pitch_deck changeset" do

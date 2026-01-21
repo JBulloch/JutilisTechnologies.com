@@ -9,14 +9,22 @@ defmodule JutilisWeb.PortfolioLive.PitchDeckForm do
     <div class="min-h-screen bg-base-100">
       <div class="mx-auto max-w-4xl px-6 py-8 lg:px-8">
         <div class="mb-8">
-          <.link navigate={~p"/portfolio/pitch-decks"} class="text-sm text-base-content/60 hover:text-primary mb-2 inline-flex items-center gap-1">
+          <.link
+            navigate={~p"/portfolio/pitch-decks"}
+            class="text-sm text-base-content/60 hover:text-primary mb-2 inline-flex items-center gap-1"
+          >
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Pitch Decks
           </.link>
           <h1 class="text-3xl font-black text-base-content">
-            <%= if @live_action == :new, do: "New Pitch Deck", else: "Edit Pitch Deck" %>
+            {if @live_action == :new, do: "New Pitch Deck", else: "Edit Pitch Deck"}
           </h1>
         </div>
 

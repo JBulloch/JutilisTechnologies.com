@@ -176,7 +176,9 @@ defmodule JutilisWeb.UserTwoFactorLive do
 
   defp get_pending_user(session) do
     case session["pending_2fa_user_id"] do
-      nil -> :error
+      nil ->
+        :error
+
       user_id ->
         user = Accounts.get_user!(user_id)
         return_to = session["pending_2fa_return_to"] || ~p"/admin/dashboard"
