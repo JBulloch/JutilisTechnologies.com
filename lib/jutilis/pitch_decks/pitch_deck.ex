@@ -2,7 +2,7 @@ defmodule Jutilis.PitchDecks.PitchDeck do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @valid_statuses ["draft", "published", "archived"]
+  @valid_statuses ["draft", "published", "private", "archived"]
   @valid_ventures ["cards-co-op", "go-derby", "other"]
 
   schema "pitch_decks" do

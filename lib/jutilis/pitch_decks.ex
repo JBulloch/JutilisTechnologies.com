@@ -117,4 +117,17 @@ defmodule Jutilis.PitchDecks do
     )
     |> Repo.one()
   end
+
+  @doc """
+  Gets a single viewable pitch_deck by id for direct URL access.
+  Returns pitch decks with status "published" or "private".
+  Private pitch decks can be viewed via direct link but don't appear in listings.
+  Returns nil if not found or status is draft/archived.
+  """
+  def get_viewable_pitch_deck(id) do
+    from(p in PitchDeck,
+      where: p.id == ^id and p.status in ["published", "private"]
+    )
+    |> Repo.one()
+  end
 end

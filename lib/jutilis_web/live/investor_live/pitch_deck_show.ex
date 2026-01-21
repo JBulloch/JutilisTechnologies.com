@@ -119,7 +119,9 @@ defmodule JutilisWeb.InvestorLive.PitchDeckShow do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    case PitchDecks.get_published_pitch_deck(id) do
+    # Use get_viewable_pitch_deck to allow both published AND private pitch decks
+    # Private pitch decks can be accessed via direct URL but don't appear in listings
+    case PitchDecks.get_viewable_pitch_deck(id) do
       nil ->
         {:ok,
          socket
