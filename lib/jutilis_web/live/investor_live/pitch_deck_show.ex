@@ -107,15 +107,17 @@ defmodule JutilisWeb.InvestorLive.PitchDeckShow do
     """
   end
 
-  defp venture_badge_class("cards-co-op"), do: "badge-warning"
-  defp venture_badge_class("go-derby"), do: "badge-success"
-  defp venture_badge_class(_), do: "badge-ghost"
+  defp venture_badge_class(nil), do: "badge-ghost"
+  defp venture_badge_class(_venture), do: "badge-primary"
 
-  defp venture_label("cards-co-op"), do: "Cards Co-op"
-  defp venture_label("go-derby"), do: "Go Derby"
-  defp venture_label("other"), do: "Other"
   defp venture_label(nil), do: "General"
-  defp venture_label(v), do: v
+  defp venture_label(slug) do
+    # Convert slug to display name (e.g., "cards-co-op" -> "Cards Co Op")
+    slug
+    |> String.split("-")
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
+  end
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do

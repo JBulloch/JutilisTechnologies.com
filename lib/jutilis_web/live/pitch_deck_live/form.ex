@@ -3,6 +3,7 @@ defmodule JutilisWeb.PitchDeckLive.Form do
 
   alias Jutilis.PitchDecks
   alias Jutilis.PitchDecks.PitchDeck
+  alias Jutilis.Ventures
 
   @impl true
   def render(assigns) do
@@ -25,8 +26,8 @@ defmodule JutilisWeb.PitchDeckLive.Form do
           field={@form[:venture]}
           type="select"
           label="Venture"
-          options={venture_options()}
-          prompt="Select a venture"
+          options={@venture_options}
+          prompt="Select a venture (optional)"
         />
 
         <.input
@@ -41,7 +42,7 @@ defmodule JutilisWeb.PitchDeckLive.Form do
           field={@form[:status]}
           type="select"
           label="Status"
-          options={status_options()}
+          options={@status_options}
         />
 
         <.input
@@ -122,19 +123,14 @@ defmodule JutilisWeb.PitchDeckLive.Form do
   end
 
   defp status_options do
-    [
-      {"Draft", "draft"},
-      {"Published", "published"},
-      {"Archived", "archived"}
-    ]
+    PitchDeck.valid_statuses()
+    |> Enum.map(fn status ->
+      {String.capitalize(status), status}
+    end)
   end
 
   defp venture_options do
-    [
-      {"Cards Co-op", "cards-co-op"},
-      {"Go Derby", "go-derby"},
-      {"Other", "other"}
-    ]
+    Ventures.list_ventures_for_select()
   end
 
   defp error_to_string(:too_large), do: "File is too large (max 5MB)"
@@ -147,6 +143,8 @@ defmodule JutilisWeb.PitchDeckLive.Form do
     {:ok,
      socket
      |> assign(:return_to, return_to(params["return_to"]))
+     |> assign(:status_options, status_options())
+     |> assign(:venture_options, venture_options())
      |> allow_upload(:html_file,
        accept: ~w(.html .htm),
        max_entries: 1,

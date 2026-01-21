@@ -3,7 +3,6 @@ defmodule Jutilis.PitchDecks.PitchDeck do
   import Ecto.Changeset
 
   @valid_statuses ["draft", "published", "private", "archived"]
-  @valid_ventures ["cards-co-op", "go-derby", "other"]
 
   schema "pitch_decks" do
     field :title, :string
@@ -44,9 +43,4 @@ defmodule Jutilis.PitchDecks.PitchDeck do
   Returns the list of valid statuses.
   """
   def valid_statuses, do: @valid_statuses
-
-  @doc """
-  Returns the list of valid ventures.
-  """
-  def valid_ventures, do: @valid_ventures
 end

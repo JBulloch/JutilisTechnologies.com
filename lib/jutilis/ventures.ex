@@ -76,6 +76,19 @@ defmodule Jutilis.Ventures do
   end
 
   @doc """
+  Returns all ventures for use in dropdown selects (admin forms).
+  Returns a list of {name, slug} tuples suitable for Phoenix form selects.
+  """
+  def list_ventures_for_select do
+    Repo.all(
+      from v in Venture,
+        where: v.status in ["active", "coming_soon"],
+        order_by: [asc: v.display_order, asc: v.name],
+        select: {v.name, v.slug}
+    )
+  end
+
+  @doc """
   Returns the count of public ventures (active + coming_soon).
   """
   def count_public_ventures do
